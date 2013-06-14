@@ -4,7 +4,8 @@ iris.screen(function(self) {
 
 		self.screens('screens',
 			[
-				[ 'apis', iris.path.screens.apis.js]
+				[ 'apis', iris.path.screens.apis.js],
+				[ 'endpoint', iris.path.screens.endpoints.js]
 			]
 			);
 		

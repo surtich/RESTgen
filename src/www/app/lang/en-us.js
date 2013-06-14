@@ -13,6 +13,7 @@
 	},
 
 	"STATES":{
-		"NEW": "New"
+		"NEW": "new",
+		"COPY": "copy"
 	}
 }

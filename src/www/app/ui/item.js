@@ -14,6 +14,10 @@ iris.ui(function(self) {
 		self.tmplMode(self.APPEND);
 		self.tmpl(iris.path.ui.item.html);
 
+		if (self.setting('link')) {
+			self.get("name").attr("href", self.setting('link'));
+		}
+
 
 		for (var fieldName in item) {
 			if (schema[fieldName] && schema[fieldName].key) {

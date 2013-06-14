@@ -34,6 +34,17 @@ iris.resource(
 					});
 				});	
 			}
+		};
+
+		self.save = function() {
+			console.log("apis",JSON.stringify(apis.items))
+			$.ajax({
+			 	url: '/save',
+			    type: 'POST',
+			    data: apis
+			}).done(function(data) {
+				alert(data);
+			}).dee	;
 		}
 
 		

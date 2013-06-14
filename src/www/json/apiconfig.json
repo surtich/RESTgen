@@ -1,12 +1,8 @@
-[
-
-    {
-    	"name": "qlog",
-        "description": "QLog API",
-        "protocol": "http",
-        "host": "localhost",
-        "port": "5000",
-        "path": ""
-    }
-
-]
+[{
+    "name": "qlog",
+    "description": "QLog API",
+    "protocol": "http",
+    "host": "localhost",
+    "port": "5000",
+    "path": ""
+}]

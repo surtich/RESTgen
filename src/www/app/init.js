@@ -7,6 +7,10 @@ iris.path = {
 		apis: {
 			js: 'app/screen/apis.js',
 			html: 'app/screen/apis.html'
+		},
+		endpoints: {
+			js: 'app/screen/endpoints.js',
+			html: 'app/screen/endpoints.html'
 		}
 	},
 	ui: {

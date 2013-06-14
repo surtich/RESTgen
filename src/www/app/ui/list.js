@@ -8,7 +8,6 @@ iris.ui(function(self) {
 		self.tmplMode(self.APPEND);
 		self.tmpl(iris.path.ui.list.html);
 		self.get('list').attr('href',"#").text(list.name);
-
 		self.ui('actions', iris.path.ui.list_actions.js, {'add': newItem});
 
 		createUIs();
@@ -27,14 +26,14 @@ iris.ui(function(self) {
 	}
 
 	function add(item, schema, pos, size) {
-		items.push(self.ui('values', iris.path.ui.item.js, {'item': item, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render}));
+		items.push(self.ui('values', iris.path.ui.item.js, {'link': self.setting('link'), 'item': item, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render}));
 	}
 
 	function newItem(clon) {
 		var item = {};
 		for (var fieldName in list.schema) {
 			if (list.schema[fieldName].key) {
-				item[fieldName] = iris.translate("STATES.NEW") + " " + (clon ? clon[fieldName] : list.name);	
+				item[fieldName] = clon ? clon[fieldName] + "_" + iris.translate("STATES.COPY") : iris.translate("STATES.NEW") + "_" + list.name;	
 			} else {
 				item[fieldName] = (clon ? clon[fieldName] : "");	
 			}

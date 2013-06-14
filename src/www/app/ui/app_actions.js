@@ -7,6 +7,7 @@ iris.ui(function(self) {
 		self.on(iris.evts.changeState, render);
 		self.get('btnSave').click(function() {
 			app.setEditable(false);
+			app.save();
 		});
 		self.get('btnCancel').click(function() {
 			app.setEditable(false);

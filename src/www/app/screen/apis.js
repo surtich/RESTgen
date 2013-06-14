@@ -7,7 +7,7 @@ iris.screen(function(self) {
 		self.ui('footer', iris.path.ui.appActions.js);
 		app.getSchemas(function(schemas) {
 			app.getApis(function(apis) {
-				self.ui("apis", iris.path.ui.list.js, {"list": {"name": apis.name, "items": apis.items, "schema": schemas.api}});
+				self.ui("apis", iris.path.ui.list.js, {"list": {"name": apis.name, "items": apis.items, "schema": schemas.api}, "link": "#/endpoint"});
 			});
 		});
 		
