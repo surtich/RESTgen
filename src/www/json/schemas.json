@@ -1,0 +1,25 @@
+{
+	"api":
+		{
+		    "description": {},
+		    "protocol": {
+				"type": "string",
+				"view": "input",
+				"values": "http, https"
+			},
+			"host": {
+				"type": "string",
+				"view": "input",
+				"default": "localhost"
+			},
+			"port": {
+				"type": "number",
+				"view": "input"
+			},
+			"path": {
+				"type": "string",
+				"view": "input"
+			}
+		}
+		
+}
