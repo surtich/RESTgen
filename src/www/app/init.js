@@ -14,25 +14,29 @@ iris.path = {
 			js: 'app/ui/app_actions.js',
 			html: 'app/ui/app_actions.html'
 		},
-		apiActions: {
-			js: 'app/ui/api_actions.js',
-			html: 'app/ui/api_actions.html'
+		list_actions: {
+			js: 'app/ui/list_actions.js',
+			html: 'app/ui/list_actions.html'
 		},
-		api: {
-			js: 'app/ui/api.js',
-			html: 'app/ui/api.html'
+		item_actions: {
+			js: 'app/ui/item_actions.js',
+			html: 'app/ui/item_actions.html'
+		},
+		list: {
+			js: 'app/ui/list.js',
+			html: 'app/ui/list.html'
 		},
 		item: {
 			js: 'app/ui/item.js',
 			html: 'app/ui/item.html'
 		},
-		input_item: {
-			js: 'app/ui/input_item.js',
-			html: 'app/ui/input_item.html'
+		field: {
+			js: 'app/ui/field.js',
+			html: 'app/ui/field.html'
 		},
-		radio_item: {
-			js: 'app/ui/radio_item.js',
-			html: 'app/ui/radio_item.html'
+		input_field: {
+			js: 'app/ui/input_field.js',
+			html: 'app/ui/input_field.html'
 		}
 	},
 	resource: {

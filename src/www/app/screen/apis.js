@@ -7,11 +7,10 @@ iris.screen(function(self) {
 		self.ui('footer', iris.path.ui.appActions.js);
 		app.getSchemas(function(schemas) {
 			app.getApis(function(apis) {
-				for (var apiName in apis) {
-					self.ui("apis", iris.path.ui.api.js, {"api": {"name": apiName, "items": apis[apiName], "schema": schemas.api}});	
-				}
+				self.ui("apis", iris.path.ui.list.js, {"list": {"name": apis.name, "items": apis.items, "schema": schemas.api}});
 			});
 		});
+		
 	}
 
 }, iris.path.screens.apis.js);

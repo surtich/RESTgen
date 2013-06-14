@@ -11,11 +11,19 @@ iris.resource(
 			if (loaded) {
 				f_ok();
 			} else {
-				setApis(function() {
-					setSchemas(function(){
-						if (!apis) {
-							apis = {}
-						}
+				getApis(function(data) {
+					apis = {};
+					apis.name = "api";
+					if (!data) {
+						apis.items = [];
+					} else {
+						apis.items = data;
+					}
+
+					getSchemas(function(data){
+						
+						schemas = data;
+
 						if (!schemas) {
 							schemas = {};
 						}
@@ -35,7 +43,7 @@ iris.resource(
 
 		self.setEditable = function(edit) {
 			editable = edit;
-			iris.notify(iris.evts.changeState)
+			iris.notify(iris.evts.changeState);
 		};
 
 		self.getApis = function(f_ok) {
@@ -43,7 +51,6 @@ iris.resource(
 				f_ok(apis);
 			});
 		}
-
 
 		self.getSchemas = function(f_ok) {
 			self.init(function() {
@@ -62,17 +69,15 @@ iris.resource(
 			);
 		}
 
-		function setApis(f_ok) {
+		function getApis(f_ok) {
 			getJSON("/json/apiconfig.json", function(data) {
-				apis = data;
-				f_ok();
+				f_ok(data);
 			});
 		}
 
-		function setSchemas(f_ok) {
+		function getSchemas(f_ok) {
 			getJSON("/json/schemas.json", function(data) {
-				schemas = data;
-				f_ok();
+				f_ok(data);
 			});
 		}
 

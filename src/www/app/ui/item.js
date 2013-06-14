@@ -1,41 +1,110 @@
 iris.ui(function(self) {
 
-	var editable = false;
-	var editor = null;
 	var item = null;
-	var api = null;
+	var schema = null;
+	var showDetails = false;
+	var editable = false;
+	var fields = [];
+	var app = iris.resource(iris.path.resource.app);
+	var actions = null;
 
 	self.create = function() {
 		item = self.setting('item');
-		api = self.setting('api');
-
+		schema = self.setting('schema');
 		self.tmplMode(self.APPEND);
 		self.tmpl(iris.path.ui.item.html);
+
+
+		for (var fieldName in item) {
+			if (schema[fieldName] && schema[fieldName].key) {
+				self.get('name').text(item[fieldName]);
+			}
+
+			fields.push(self.ui('values', iris.path.ui.field.js, {
+				field: {
+					name: fieldName,
+					value: item[fieldName],
+					schema: schema[fieldName]
+				},
+				item: item
+			}));
+		}
+
+		self.item = item;
+		self.showValues = showValues;
+		self.setEditable = setEditable;
+		self.save = save;
+		self.cancel = cancel;
+		self.del = del;
+		self.copy = copy;
+		self.move = move;
+		self.render = render;
+
+		actions = self.ui('actions', iris.path.ui.item_actions.js, {'ui': self});
+
 		render();
-		self.get('name').text(item.name + ":");
-		self.get('value').text(item.value);
-		var schema = item.schema;
-		editor = self.ui('editor', iris.path.ui[(schema.view || 'input') + '_item'].js, {value: item.value}, self.APPEND);
+
 	}
 
-	self.setEditable = function(state) {
+	function showValues(visible) {
+		if (showDetails != visible) {
+			self.get('values').slideToggle();
+			showDetails = visible;
+		}
+	}
+
+
+	function setEditable(state) {
 		editable = state;
 		render();
 	}
 
-	self.save = function() {
-		api[item.name] = editor.val();
-		item.value = api[item.name];
-		self.get('value').text(item.value);
+	function save() {
+		for (var i = 0; i < fields.length; i++) {
+			var field = fields[i];
+			field.save();
+		}
+
+		for (var fieldName in item) {
+			if (schema[fieldName].key) {
+				self.get('name').text(item[fieldName]);
+				break;
+			}
+		}
+
+		editable = false;
+		render();
 	}
 
-	self.cancel = function() {
-		editor.val(item.value);
+	function cancel() {
+		for (var i = 0; i < fields.length; i++) {
+			var field = fields[i];
+			field.cancel();
+		}
+		editable = false;
+		render();
+	}
+
+	function del() {
+		self.destroyUI();
+		self.setting('delete')(self.setting('pos'));
+	}
+
+	function copy() {
+		self.setting('add')(item);
 	}
 
 	function render() {
-		self.get('editor').toggle(editable);
-		self.get('value').toggle(!editable);
+		self.get('values').toggle(showDetails);
+		for (var i = 0; i < fields.length; i++) {
+			var field = fields[i];
+			field.setEditable(app.isEditable() && editable);	
+		}
+		actions.render();
+	}
+
+	function move(pos1, pos2) {
+		self.setting('move')(pos1, pos2);	
 	}
 
 

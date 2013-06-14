@@ -1,6 +1,9 @@
 {
 	"api":
 		{
+			"name": {
+				"key": true
+				},
 		    "description": {},
 		    "protocol": {
 				"type": "string",
