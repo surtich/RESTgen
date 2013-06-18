@@ -818,3 +818,7 @@ display: inline;
 list-style-type: none;
 padding-right: 20px;
 }
+
+item {
+  margin-left: 10px;
+}

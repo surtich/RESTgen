@@ -4,6 +4,7 @@ iris.ui(function(self) {
 	var editor = null;
 	var field = null;
 	var item = null;
+	var schema = null;
 	
 	self.create = function() {
 		field = self.setting('field');
@@ -12,7 +13,7 @@ iris.ui(function(self) {
 		self.tmpl(iris.path.ui.field.html);
 		self.get('name').text(field.name + ":");
 		self.get('value').text(field.value);
-		var schema = field.schema;
+		schema = field.schema;
 		editor = self.ui('editor', iris.path.ui[(field.schema && field.schema.view || 'input') + '_field'].js, {value: field.value}, self.APPEND);
 		render();
 	}
@@ -46,6 +47,9 @@ iris.ui(function(self) {
 	function render() {
 		self.get('editor').toggle(editable);
 		self.get('value').toggle(!editable);
+		if (schema.show === false) {
+			self.get().toggle(editable);
+		}
 	}
 
 

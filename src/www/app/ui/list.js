@@ -7,8 +7,9 @@ iris.ui(function(self) {
 
 		self.tmplMode(self.APPEND);
 		self.tmpl(iris.path.ui.list.html);
+		self.get('list').toggle(false);
 		self.get('list').attr('href',"#").text(list.name);
-		self.ui('actions', iris.path.ui.list_actions.js, {'add': newItem});
+		self.ui('actions', iris.path.ui.list_actions.js, {'add': newItem, 'list': list});
 
 		createUIs();
 		
@@ -20,17 +21,15 @@ iris.ui(function(self) {
 			add(item, list.schema, i);
 		}
 
-
-
 		render();
 	}
 
 	function add(item, schema, pos, size) {
-		items.push(self.ui('values', iris.path.ui.item.js, {'link': self.setting('link'), 'item': item, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render}));
+		items.push(self.ui('values', iris.path.ui.item.js, {'link_schema': self.setting('link_schema'), 'item': item, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render}));
 	}
 
 	function newItem(clon) {
-		var item = {};
+		var item = $.extend({}, clon);
 		for (var fieldName in list.schema) {
 			if (list.schema[fieldName].key) {
 				item[fieldName] = clon ? clon[fieldName] + "_" + iris.translate("STATES.COPY") : iris.translate("STATES.NEW") + "_" + (list.type || list.name);	

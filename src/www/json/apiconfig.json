@@ -1,15 +1,26 @@
 [{
     "name": "qlog",
-    "description": "QLog API",
-    "protocol": "http",
-    "host": "localhost",
-    "port": "5000",
-    "path": "",
-    "enpoints": [{
-        "name": "User"
-    }, {
-        "name": "App"
-    }, {
-        "name": "Log"
+    "version": [{
+        "name": "0.0.1",
+        "description": "QLog API",
+        "protocol": "http",
+        "host": "localhost",
+        "port": "5000",
+        "path": "",
+        "endpoint": [{
+            "name": "User",
+            "method": [{
+                "name": "Signin",
+                "param": [{
+                    "name": "user"
+                }, {
+                    "name": "password"
+                }]
+            }]
+        }, {
+            "name": "App"
+        }, {
+            "name": "Log"
+        }]
     }]
 }]

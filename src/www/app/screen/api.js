@@ -13,7 +13,15 @@ iris.screen(function(self) {
   }
   app.getSchemas(function(schemas) {
 			app.getApi(params.key, function(api) {
-				ui = self.ui("endpoints", iris.path.ui.list.js, {"list": {'type': 'endpoint', "name": params.key, "items": api.endpoints, "schema": schemas.endpoint}});
+				if (!api) {
+					alert("API not found: " + params.key);	
+				} else {
+					if (!api.endpoints) {
+						api.endpoints = [];
+					}
+					ui = self.ui("endpoints", iris.path.ui.list.js, {"list": {'type': 'endpoint', "name": params.key, "items": api.endpoints, "schema": schemas.endpoint}});	
+				}
+				
 			});
 		});
  }

@@ -8,9 +8,9 @@ iris.path = {
 			js: 'app/screen/apis.js',
 			html: 'app/screen/apis.html'
 		},
-		api: {
-			js: 'app/screen/api.js',
-			html: 'app/screen/api.html'
+		details: {
+			js: 'app/screen/details.js',
+			html: 'app/screen/details.html'
 		}
 	},
 	ui: {

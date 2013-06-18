@@ -7,6 +7,7 @@ iris.ui(function(self) {
  var fields = [];
  var app = iris.resource(iris.path.resource.app);
  var actions = null;
+ var key = null;
 
  self.create = function() {
   item = self.setting('item');
@@ -15,22 +16,34 @@ iris.ui(function(self) {
   self.tmpl(iris.path.ui.item.html);
 
 
-  for (var fieldName in item) {
-   if (schema[fieldName] && schema[fieldName].key) {
-    self.get('name').text(item[fieldName]);
-    if (self.setting('link')) {
-     self.get("name").attr("href", self.setting('link') + "?key=" + item[fieldName]);
+  for (var fieldName in schema) {
+    if (schema[fieldName].key) {
+      self.get('name').text(item[fieldName]);
+      key = fieldName;
     }
-   }
+    changeLink();
 
-   fields.push(self.ui('values', iris.path.ui.field.js, {
-    field: {
-     name: fieldName,
-     value: item[fieldName],
-     schema: schema[fieldName]
-    },
-    item: item
-   }));
+    if (schema[fieldName].type !== "list") {
+      fields.push(self.ui('values', iris.path.ui.field.js, {
+        field: {
+         name: fieldName,
+         value: item[fieldName] || "",
+         schema: schema[fieldName]
+        },
+        item: item
+       }));
+    } else {
+      var nameSchema = schema[fieldName].schema;
+      app.getSchemas(function(schemas) {
+        var schema = schemas[nameSchema];
+        if (!item[fieldName]) {
+          item[fieldName] = [];
+        }
+        self.ui("values", iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "items": item[fieldName], "schema": schema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName});
+        //console.log()
+      });
+    }
+  
   }
 
   self.item = item;
@@ -70,12 +83,12 @@ iris.ui(function(self) {
    field.save();
   }
 
-  for (var fieldName in item) {
-   if (schema[fieldName].key) {
-    self.get('name').text(item[fieldName]);
-    break;
-   }
+  if (key) {
+    self.get('name').text(item[key]);
   }
+
+  changeLink();
+
 
   editable = false;
   render();
@@ -112,6 +125,13 @@ iris.ui(function(self) {
   self.setting('move')(pos1, pos2);	
  }
 
+ function changeLink() {
+  if (self.setting('link_schema') && key) {
+    self.get("name").attr("href", "#/details?" + self.setting('link_schema') +  "=" + item[key]);
+  }
+ }
+
+  
 
 
 }, iris.path.ui.item.js);

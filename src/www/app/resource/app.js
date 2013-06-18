@@ -4,6 +4,15 @@ iris.resource(
   var editable = false;
   var apis = null;
   var schemas = null;
+  var order = [];
+  order.push({"api": "api"});
+  order.push({"version": "api_version"});
+  order.push({"endpoint": "endpoint"});
+  order.push({"method": "method"});
+  order.push({"param": "param"});
+
+  self.order = order;
+  
 
   self.init = function(f_ok) {
    if (loaded) {
@@ -27,7 +36,6 @@ iris.resource(
       }
       if (!schemas.api) {
        schemas.api = {};
-       schemas.endpoint = {};
       }
       f_ok();
      });
@@ -36,7 +44,6 @@ iris.resource(
   };
 
   self.save = function() {
-   debugger;
    $.ajax({
     url: '/save',
     type: 'POST',
@@ -69,16 +76,15 @@ iris.resource(
   }
   
   self.getApi = function(apiKey, f_ok) {
-   self.init(function() {
-    getApi(apiKey, function(endpoints) {
+   var api = null;
+   self.init(function() {    
      for (var i = 0; i < apis.items.length; i++) {
-      var api = apis.items[i];
-      if (apiKey === api.name) {
-       api.enpoints = endpoints.endpoints;
+      if (apiKey === apis.items[i].name) {
+       api = apis.items[i];
+       break;
       }
      }
-     f_ok(endpoints);
-    });
+     f_ok(api);
    });
   }
 
@@ -105,16 +111,6 @@ iris.resource(
    });
   }
   
-  function getApi(apiKey, f_ok) {
-   getJSON("/json/" + apiKey + ".json", function(data) {
-    if (data == null) {
-     data = {"endpoints": []};
-    }
-    f_ok(data);
-   });
-  }
-
-
 		
  },
  iris.path.resource.app);
