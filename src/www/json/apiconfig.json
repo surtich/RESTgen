@@ -4,5 +4,12 @@
     "protocol": "http",
     "host": "localhost",
     "port": "5000",
-    "path": ""
+    "path": "",
+    "enpoints": [{
+        "name": "User"
+    }, {
+        "name": "App"
+    }, {
+        "name": "Log"
+    }]
 }]

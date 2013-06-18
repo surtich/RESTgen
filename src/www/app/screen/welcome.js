@@ -1,11 +1,12 @@
 iris.screen(function(self) {
 	self.create = function() {
 		self.tmpl(iris.path.welcome.html);
-
+  self.ui('footer', iris.path.ui.appActions.js);
+  
 		self.screens('screens',
 			[
 				[ 'apis', iris.path.screens.apis.js],
-				[ 'endpoint', iris.path.screens.endpoints.js]
+				[ 'api', iris.path.screens.api.js]
 			]
 			);
 		

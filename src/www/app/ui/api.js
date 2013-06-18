@@ -11,11 +11,10 @@ iris.ui(function(self) {
 
 		render();
 		for (var itemName in api.items) {
-			console.log(api.items[itemName])
 			items.push(self.ui('values', iris.path.ui.item.js, {'api': api, 'item': {'name': itemName, 'value': api.items[itemName], schema: api.schema[itemName]}}));
 		}
 
-		var actions = self.ui('actions', iris.path.ui.apiActions.js, {values: self.get('values'), items: items});
+		self.ui('actions', iris.path.ui.apiActions.js, {values: self.get('values'), items: items});
 
 	}
 

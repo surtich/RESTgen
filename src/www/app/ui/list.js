@@ -33,7 +33,7 @@ iris.ui(function(self) {
 		var item = {};
 		for (var fieldName in list.schema) {
 			if (list.schema[fieldName].key) {
-				item[fieldName] = clon ? clon[fieldName] + "_" + iris.translate("STATES.COPY") : iris.translate("STATES.NEW") + "_" + list.name;	
+				item[fieldName] = clon ? clon[fieldName] + "_" + iris.translate("STATES.COPY") : iris.translate("STATES.NEW") + "_" + (list.type || list.name);	
 			} else {
 				item[fieldName] = (clon ? clon[fieldName] : "");	
 			}

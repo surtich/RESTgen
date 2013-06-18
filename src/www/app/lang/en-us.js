@@ -6,7 +6,7 @@
 		"DETAILS": "Details",
 		"OK": "OK",
 		"DELETE": "Delete",
-		"ADD": "Add",
+		"ADD": "New",
 		"COPY": "Copy",
 		"MOVE_UP": "Move up",
 		"MOVE_DOWN": "Move down"
