@@ -9,6 +9,7 @@ iris.ui(function(self) {
 	self.create = function() {
 		ui = self.setting('ui');
 		self.tmpl(iris.path.ui.item_actions.html);
+		self.get("btnDetails").hide();
 		self.on(iris.evts.changeState, function() {
 			if (!app.isEditable()) {
 				self.get('btnCancel').trigger('click');				
@@ -64,13 +65,15 @@ iris.ui(function(self) {
 
 	
 	function render() {
-		self.get('btnOK').toggle(app.isEditable() && showDetails && editable);
-		self.get('btnCancel').toggle(app.isEditable() && showDetails && editable);
-		self.get('btnEdit').toggle(app.isEditable() && showDetails && !editable);
-		self.get('btnDelete').toggle(app.isEditable() && !editable);
-		self.get('btnCopy').toggle(app.isEditable() && !editable);
-		self.get('btnUp').toggle(app.isEditable() && !editable && ui.setting("pos") != 0);
-		self.get('btnDown').toggle(app.isEditable() && !editable && ui.setting("pos") < ui.setting("size") - 1);
+		self.get('lblOK').toggle(app.isEditable() && showDetails && editable);
+		self.get('lblCancel').toggle(app.isEditable() && showDetails && editable);
+		self.get('lblEdit').toggle(app.isEditable() && showDetails && !editable);
+		self.get('lblDelete').toggle(app.isEditable() && !editable);
+		self.get('lblCopy').toggle(app.isEditable() && !editable);
+		self.get('lblUp').toggle(app.isEditable() && !editable && ui.setting("pos") != 0);
+		self.get('lblDown').toggle(app.isEditable() && !editable && ui.setting("pos") < ui.setting("size") - 1);
+		self.get('lblDetails').toggleClass("open", !showDetails);
+		self.get('lblDetails').toggleClass("close", showDetails);
 	}
 
 

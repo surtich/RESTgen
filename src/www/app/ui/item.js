@@ -15,7 +15,6 @@ iris.ui(function(self) {
   self.tmplMode(self.APPEND);
   self.tmpl(iris.path.ui.item.html);
 
-
   for (var fieldName in schema) {
     if (schema[fieldName].key) {
       self.get('name').text(item[fieldName]);
@@ -23,8 +22,13 @@ iris.ui(function(self) {
     }
     changeLink();
 
+    var container = 'values';
+    if (schema[fieldName].inline) {
+      container = "inline-values"
+    }
+
     if (schema[fieldName].type !== "list") {
-      fields.push(self.ui('values', iris.path.ui.field.js, {
+      fields.push(self.ui(container, iris.path.ui.field.js, {
         field: {
          name: fieldName,
          value: item[fieldName] || "",
@@ -39,8 +43,7 @@ iris.ui(function(self) {
         if (!item[fieldName]) {
           item[fieldName] = [];
         }
-        self.ui("values", iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "items": item[fieldName], "schema": schema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName});
-        //console.log()
+        self.ui(container, iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "items": item[fieldName], "schema": schema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName});
       });
     }
   

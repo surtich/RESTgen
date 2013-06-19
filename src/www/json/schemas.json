@@ -2,7 +2,8 @@
 {
  "api": {
   "name": {
-   "key": true
+   "key": true,
+   "show": false
   },
   "version": {
     "type": "list",
@@ -12,7 +13,8 @@
  "api_version":
  {
   "name": {
-   "key": true
+   "key": true,
+   "show": false
   },
   "description": {},
   "protocol": {
@@ -41,7 +43,8 @@
  "endpoint":
  {
   "name": {
-   "key": true
+   "key": true,
+   "show": false
   },
   "method": {
     "type": "list",
@@ -51,7 +54,15 @@
  "method":
  {
   "name": {
-   "key": true
+   "key": true,
+   "show": false
+  },
+  "method" : {
+    "inline": true
+
+  },
+  "path" : {
+    "inline": true
   },
   "param": {
     "type": "list",
@@ -60,10 +71,8 @@
  },
  "param": {
   "name": {
-   "key": true
-  },
-  "test": {
-    "show" : false
+   "key": true,
+   "show": false
   }
  }
 }

@@ -15,7 +15,9 @@
                     "name": "user"
                 }, {
                     "name": "password"
-                }]
+                }],
+                "method": "POST",
+                "path": "/signin"
             }]
         }, {
             "name": "App"

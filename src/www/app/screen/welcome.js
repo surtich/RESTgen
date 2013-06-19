@@ -1,7 +1,7 @@
 iris.screen(function(self) {
 	self.create = function() {
 		self.tmpl(iris.path.welcome.html);
-  self.ui('footer', iris.path.ui.appActions.js);
+  self.ui('footer', iris.path.ui.appActions.js, {}, self.PREPEND);
   
 		self.screens('screens',
 			[
@@ -24,7 +24,7 @@ iris.screen(function(self) {
 		var html = "";
 		var href = START;
 		if (pos === 0) {
-			html += "<a href='#/apis'>#</a>";
+			html += "<li><a href='#/apis'>" + iris.translate("ACTIONS.HOME") + "</a></li>";
 			var params = location.hash.substr(pos + START.length).split("&");
 			for (var i = 0; i < params.length; i++) {
 				var param = params[i];
@@ -34,8 +34,8 @@ iris.screen(function(self) {
 					href += "&";	
 				}
 				href += param;
-				var link = "<a href='"+ href +"'>" + value + "</a>";
-				html += " > " + link;
+				var link = "<li><a href='"+ href +"'>" + value + "</a></li>";
+				html += link;
 			}
 		}
 		self.get("breadcrumb").html(html);

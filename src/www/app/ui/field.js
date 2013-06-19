@@ -9,11 +9,19 @@ iris.ui(function(self) {
 	self.create = function() {
 		field = self.setting('field');
 		item = self.setting('item');
+		schema = field.schema;
 		self.tmplMode(self.APPEND);
 		self.tmpl(iris.path.ui.field.html);
+		self.get('field').addClass("field " + field.name);
 		self.get('name').text(field.name + ":");
 		self.get('value').text(field.value);
-		schema = field.schema;
+		
+
+		if (schema.inline) {
+      		self.get('field').addClass("inline");
+      		self.get('name').hide();
+    	}
+
 		editor = self.ui('editor', iris.path.ui[(field.schema && field.schema.view || 'input') + '_field'].js, {value: field.value}, self.APPEND);
 		render();
 	}

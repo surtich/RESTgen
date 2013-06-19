@@ -7,6 +7,7 @@ iris.ui(function(self) {
 
 		self.tmplMode(self.APPEND);
 		self.tmpl(iris.path.ui.list.html);
+		self.get('list').addClass("list " + list.type);
 		self.get('list').toggle(false);
 		self.get('list').attr('href',"#").text(list.name);
 		self.ui('actions', iris.path.ui.list_actions.js, {'add': newItem, 'list': list});
@@ -25,7 +26,9 @@ iris.ui(function(self) {
 	}
 
 	function add(item, schema, pos, size) {
-		items.push(self.ui('values', iris.path.ui.item.js, {'link_schema': self.setting('link_schema'), 'item': item, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render}));
+		var ui = self.ui('values', iris.path.ui.item.js, {'link_schema': self.setting('link_schema'), 'item': item, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render});
+		ui.get("item").addClass("item " + list.type);
+		items.push(ui);
 	}
 
 	function newItem(clon) {
