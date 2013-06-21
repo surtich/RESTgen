@@ -4,7 +4,7 @@ iris.ui(function(self) {
 	var showDetails = false;
 	var expandAll = false;
 	var ui = null;
- var filter = "";
+ 	var filter = "";
 
 	var app = iris.resource(iris.path.resource.app);
 
@@ -12,7 +12,20 @@ iris.ui(function(self) {
 		ui = self.setting('ui');
 		self.tmpl(iris.path.ui.item_actions.html);
 		self.get("btnDetails").hide();
-  self.get('txtFilter').hide();
+  		self.get('txtFilter').hide();
+
+  		if (ui.filter === false) {
+  			self.get('filter').hide();
+  		}
+
+  		if (ui.expand === false) {
+  			self.get("lblExpandAll").hide();
+  			self.get("lblCollapseAll").hide();
+  		}
+
+  		if (ui.details === false) {
+  			self.get("lblDetails").hide();
+  		}
   
 		self.on(iris.evts.changeState, function() {
 			if (!app.isEditable()) {
@@ -43,6 +56,8 @@ iris.ui(function(self) {
 
 		self.get('btnEdit').click(function() {
 			editable = true;
+			showDetails = true;
+			ui.showValues(showDetails);
 			ui.setEditable(editable);
 		});
 
@@ -79,12 +94,21 @@ iris.ui(function(self) {
     txtFilter.toggle();
    } else {
     if (txtFilter.val() !== filter) {
+     self.get('btnExpandAll').trigger('click');
      filter = txtFilter.val();
     } else {
      txtFilter.val("").hide();
+     filter ="";
     }
+    ui.filter(filter, true);
+    
    }
 		});
+
+ 	self.filter = function(f) {
+ 		filter = f;
+ 		self.get("txtFilter").val(filter).toggle(filter != "");
+ 	}
 
 
 		render();
@@ -101,7 +125,7 @@ iris.ui(function(self) {
 	function render() {
 		self.get('lblOK').toggle(app.isEditable() && showDetails && editable);
 		self.get('lblCancel').toggle(app.isEditable() && showDetails && editable);
-		self.get('lblEdit').toggle(app.isEditable() && showDetails && !editable);
+		self.get('lblEdit').toggle(app.isEditable() && !editable);
 		self.get('lblDelete').toggle(app.isEditable() && !editable);
 		self.get('lblCopy').toggle(app.isEditable() && !editable);
 		self.get('lblUp').toggle(app.isEditable() && !editable && ui.setting("pos") != 0);

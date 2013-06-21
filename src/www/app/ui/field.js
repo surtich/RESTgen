@@ -5,6 +5,7 @@ iris.ui(function(self) {
 	var field = null;
 	var item = null;
 	var schema = null;
+	var filter = "";
 
 	self.settings({"table": null});
 	
@@ -13,18 +14,22 @@ iris.ui(function(self) {
 		item = self.setting('item');
 		schema = field.schema;
 		self.tmplMode(self.APPEND);
-		self.tmpl(iris.path.ui.field.html);
+		if (self.setting("table")) {
+      		self.tmpl(iris.path.ui.field_cell.html);
+      	} else {
+      		self.tmpl(iris.path.ui.field.html);	
+      	}
+		
 		self.get('field').addClass("field " + field.name);
 		self.get('name').text(field.name + ":");
 		self.get('value').text(field.value);
 	
 		
 		if (schema.inline) {
-      		self.get('field').addClass("inline");
+			if (!self.setting("table")) {
+				self.get('field').addClass("inline");	
+			}
       		self.get('name').hide();
-      		if (self.setting("table")) {
-      			self.get('field').addClass("cell");
-      		}
     	}
 
     	if (schema.show_title === false) {
@@ -72,6 +77,34 @@ iris.ui(function(self) {
 			editor.get(0).get(0).value = "";
 		}
 		self.setEditable(true);
+	}
+
+	self.filter = function(f) {
+		filter = f;
+		var regExp = filter;
+		var fieldName = "";
+		var pos = f.indexOf(":");
+		if (pos > -1) {
+			fieldName = filter.substr(0, pos);
+			regExp = filter.substr(pos + 1);
+		}
+		
+
+		//console.log("filter=" + filter + " field.name =" + field.name + " field.value =" + field.value)
+		
+		var match = !filter || new RegExp(regExp, "ig").test(field.value);
+		
+		if (match && fieldName) {
+			match = fieldName === field.name;
+			
+		}
+
+		if (schema.show) {
+
+			self.get('field').toggle(match === true);	
+		}
+		
+		return match;
 	}
 
 	function render() {

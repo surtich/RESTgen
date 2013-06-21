@@ -30,13 +30,22 @@ iris.path = {
 			js: 'app/ui/list.js',
 			html: 'app/ui/list.html'
 		},
+		list_table: {
+			html: 'app/ui/list_table.html'
+		},
 		item: {
 			js: 'app/ui/item.js',
 			html: 'app/ui/item.html'
 		},
+		item_row: {
+			html: 'app/ui/item_row.html'
+		},
 		field: {
 			js: 'app/ui/field.js',
 			html: 'app/ui/field.html'
+		},
+		field_cell: {
+			html: 'app/ui/field_cell.html'
 		},
 		input_field: {
 			js: 'app/ui/input_field.js',

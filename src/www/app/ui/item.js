@@ -11,15 +11,26 @@ iris.ui(function(self) {
  var link = true;
  var lists = [];
  var view = null;
-
- self.settings({"view": null});
+ 
+ self.settings({"view": null, "header": null});
 
  self.create = function() {
   item = self.setting('item');
   view = self.setting('view');
   schema = self.setting('schema');
   self.tmplMode(self.APPEND);
-  self.tmpl(iris.path.ui.item.html);
+
+  if (view === "table") {
+    self.tmpl(iris.path.ui.item_row.html);
+    showDetails = true;
+
+
+  } else {
+    self.tmpl(iris.path.ui.item.html);  
+  }
+
+  self.get().addClass("item");
+  
 
 
   for (var fieldName in schema) {
@@ -30,17 +41,32 @@ iris.ui(function(self) {
         link = schema[fieldName].link;
         self.get('name').addClass("no_events");
       }
+      if (schema[fieldName].filter === false) {
+        self.filter = false;
+      }
+      if (schema[fieldName].expand === false) {
+        self.expand = false;
+      }
+      if (schema[fieldName].details === false) {
+        self.details = false;
+      }
+        
     }
     changeLink();
 
     var container = 'values';
-    if (schema[fieldName].inline) {
-      if (schema[fieldName].pre) {
-        container = "pre-inline-values";
-      } else {
-        container = "inline-values";
-      }
+    if (view == "table") {
+      container = 'values';
+    } else {
+      if (schema[fieldName].inline) {
+        if (schema[fieldName].pre) {
+          container = "pre-inline-values";
+        } else {
+          container = "inline-values";
+        }
+      }  
     }
+    
 
     if (schema[fieldName].type !== "list") {
       fields.push(self.ui(container, iris.path.ui.field.js, {
@@ -71,11 +97,12 @@ iris.ui(function(self) {
   
   actions = self.ui('actions', iris.path.ui.item_actions.js, {
    'ui': self
-  });
+  }, self.APPEND);
 
   self.item = item;
   self.showValues = showValues;
   self.toggleAll = toggleAll;
+  self.filter = filter;
   self.setEditable = setEditable;
   self.save = save;
   self.cancel = cancel;
@@ -110,9 +137,38 @@ iris.ui(function(self) {
   }
  }
 
+ function filter(filter, retain) {
+  var match = !filter ;
+  for (var k = 0; k < fields.length; k++) {
+        var field = fields[k];
+        if (field.filter(filter)) {
+          match = true;
+        }
+      }
+  for (var i = 0; i < lists.length; i++) {
+    var list = lists[i];
+    for (var j = 0; j < list.items.length; j++) {
+      var item = list.items[j];
+      if (item.filter(filter)) {
+        match = true;
+      }
+      item.actions.filter(filter);
+    }
+  }
+  //console.log("match "+match  +" retain " +  retain)
+  var container = "item";
+  if (view == "table") {
+    container = "values";
+  }
+  self.get(container).toggle(match === true || retain === true);
+
+  return match || retain;
+ }
+
 
  function setEditable(state) {
   editable = state;
+  
   render();
  }
 
@@ -152,11 +208,17 @@ iris.ui(function(self) {
  }
 
  function render() {
+  if (view === "table") {
+    showDetails = true;
+  }
 
   self.get('values').toggle(showDetails);
   for (var i = 0; i < fields.length; i++) {
    var field = fields[i];
    field.setEditable(app.isEditable() && editable);	
+  }
+  if (self.setting("header")) {
+    self.setting("header").find("[data-show]").toggle(editable);  
   }
   actions.render();
  }

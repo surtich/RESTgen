@@ -24,7 +24,7 @@ blockquote:before, blockquote:after, q:before, q:after {
 
 input,
 select {
-  vertical-align: middle;
+  vertical-align: middle;s
 }
 
 body {
@@ -437,7 +437,6 @@ border-color: #c3d9ec;
 
 .method > span[data-id='value']{
   text-transform: uppercase;
-  display: inline-block;
   display: inline-block;
   width: 50px;
   font-size: 0.7em;
