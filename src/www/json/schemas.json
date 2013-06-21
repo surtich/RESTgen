@@ -27,10 +27,6 @@
    "view": "input",
    "default": "localhost"
   },
-  "port": {
-   "type": "number",
-   "view": "input"
-  },
   "path": {
    "type": "string",
    "view": "input"
@@ -58,21 +54,38 @@
    "show": false
   },
   "method" : {
-    "inline": true
-
+    "inline": true,
+    "pre": true,
+    "value_as_css": true,
+    "default": "GET"
   },
   "path" : {
     "inline": true
   },
+  "description": {
+    "show_title": false,
+    "inline" : true
+    },
   "param": {
     "type": "list",
+    "view": "table",
     "schema": "param"
   }
  },
  "param": {
   "name": {
    "key": true,
-   "show": false
+   "show": false,
+   "link": false
+  },
+  "value": {
+    "inline" : true
+    },
+  "location": {
+    "inline" : true
+    },
+  "description": {
+    "inline" : true
   }
  }
 }

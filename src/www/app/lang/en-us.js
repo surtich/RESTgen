@@ -10,7 +10,10 @@
 		"COPY": "Copy",
 		"MOVE_UP": "Move up",
 		"MOVE_DOWN": "Move down",
-		"HOME": "Home"
+		"HOME": "Home",
+		"TOGGLE_ALL": "Toggle all",
+		"EXPAND_ALL": "Expand all",
+		"COLLAPSE_ALL": "Collapse all"
 	},
 
 	"STATES":{

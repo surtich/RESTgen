@@ -191,6 +191,7 @@ li {
 
 .invisible {
   visibility: hidden;
+  border: none;
 }
 
 
@@ -291,6 +292,16 @@ label {
   
 }
 
+.expand {
+   background-image: url('/img/expand.png');
+  
+}
+
+.collapse {
+   background-image: url('/img/collapse.png');
+  
+}
+
 .close {
   background-image: url('/img/minus.png');
     }
@@ -307,11 +318,13 @@ label {
 
 .field {
  margin-left: 10px; 
+   margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-input, button {
-  margin-top: 10px;
-  margin-bottom: 10px;
+input[type='button'], button   {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .breadcrumb {
@@ -369,6 +382,7 @@ input, button {
 .breadcrumb li:first-child a {
   padding-left: 10px;
 }
+
 .breadcrumb li:nth-child(2) a       { background:        hsla(34,85%,45%,1); }
 .breadcrumb li:nth-child(2) a:after { border-left-color: hsla(34,85%,45%,1); }
 .breadcrumb li:nth-child(3) a       { background:        hsla(34,85%,55%,1); }
@@ -385,3 +399,86 @@ input, button {
 
 .breadcrumb li a:hover { background: hsla(34,85%,25%,1); }
 .breadcrumb li a:hover:after { border-left-color: hsla(34,85%,25%,1) !important; }
+
+.no_events {
+   pointer-events: none;
+   cursor: default;
+}
+
+.item.POST {
+  background-color: #e7f6ec;
+border: 1px solid black;
+border-color: #c3e8d1;
+  }
+
+  .item.PUT {
+  background-color: #f9f2e9;
+border: 1px solid black;
+border-color: #f0e0ca;
+  }
+
+  .item.DELETE {
+  background-color: #f5e8e8;
+border: 1px solid black;
+border-color: #e8c6c7;
+  }
+
+  .item.GET {
+  background-color: #e7f0f7;
+border: 1px solid black;
+border-color: #c3d9ec;
+  }
+
+
+.method > span[data-id='value']{
+  text-transform: uppercase;
+  display: inline-block;
+  display: inline-block;
+  width: 50px;
+  font-size: 0.7em;
+  text-align: center;
+  padding: 7px 0 4px 0;
+  border-radius: 2px;
+  border: 1px solid black;
+  color: white;
+  }
+
+.POST > span[data-id='value']{
+  background-color: #10a54a;
+  border-color: #c3e8d1;
+}
+
+.PUT > span[data-id='value']{
+  background-color: #c5862b;
+  border-color: #f0e0ca;
+}
+
+.DELETE > span[data-id='value']{
+  background-color: #a41e22;
+  border-color: #e8c6c7;
+}
+
+.GET > span[data-id='value']{
+  background-color: #0f6ab4;
+  border-color: #c3d9ec;
+}
+
+.table {
+  display: table;
+  width: 100%;
+}
+
+.table-row {
+  display: table-row;
+}
+
+.table-cell {
+  display: table-cell;
+}
+
+.cell2 {
+  padding-left: 100px;
+}
+.cell {
+  padding-left: 80px;
+}

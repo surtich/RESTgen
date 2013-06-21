@@ -15,7 +15,9 @@ iris.screen(function(self) {
 	}
 
 	self.awake = function() {
-		iris.navigate('#/apis');
+		if (!location.hash || location.hash == "#") {
+			iris.navigate('#/apis');	
+		}
 	}
 
 	function updateBreadcrumb() {

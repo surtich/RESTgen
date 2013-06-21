@@ -1,7 +1,3 @@
-/*! Iris - v0.5.1-SNAPSHOT - 2013-03-20
-* http://thegameofcode.github.com/iris
-* Copyright (c) 2013 Iris; Licensed New-BSD */
-
 
 var iris = {};
 
@@ -21,22 +17,13 @@ window.iris = iris;
         iris.on("iris-reset", _init);
     }
 
-    function _indexOf (item, array) {
-        for ( var i = 0; i < array.length; i++ ) {
-            if ( array[i] === item ) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     iris.on = function (p_eventName, f_func) {
         if ( !_events.hasOwnProperty(p_eventName) ) {
             _events[p_eventName] = [];
         }
 
         var callbacks = _events[p_eventName];
-        var index = _indexOf(f_func, callbacks);
+        var index = $.inArray(f_func, callbacks);
         if ( index === -1 ) {
             callbacks.push(f_func);
         }
@@ -46,7 +33,7 @@ window.iris = iris;
     iris.off = function (p_eventName, f_func){
         if ( _events.hasOwnProperty(p_eventName) ){
             if (f_func !== undefined) {
-                var index = _indexOf(f_func, _events[p_eventName]);
+                var index = $.inArray(f_func, _events[p_eventName]);
                 if ( index !== -1 ) {
                     _events[p_eventName].splice(index, 1);
                 }
@@ -75,7 +62,7 @@ window.iris = iris;
         // This occur if an event that destroy uis is notified
         var callbacks = _events[p_eventName].concat([]);
         for ( var i=0; i < p_callbacks.length; i++ ) {
-            var index = _indexOf(p_callbacks[i], callbacks);
+            var index = $.inArray(p_callbacks[i], callbacks);
             if ( index !== -1 ) {
                 callbacks.splice(index, 1);
             }
@@ -98,7 +85,7 @@ window.iris = iris;
         }
 
         var callbacks = this.events[p_eventName];
-        var index = _indexOf(f_func, callbacks);
+        var index = $.inArray(f_func, callbacks);
         if ( index === -1 ) {
             callbacks.push(f_func);
             iris.on(p_eventName, f_func);
@@ -109,7 +96,7 @@ window.iris = iris;
     eventPrototype.off = function (p_eventName, f_func){
         var callbacks = this.events[p_eventName];
         if ( callbacks ) {
-            var index = _indexOf(f_func, callbacks);
+            var index = $.inArray(f_func, callbacks);
 
             if ( index !== -1 ) {
                 callbacks.splice(index, 1);
@@ -138,8 +125,8 @@ window.iris = iris;
         _appBaseUri,
         _cache,
         _cacheVersion,
-        _hasConsole,
-        _logEnabled;
+        _logEnabled,
+        _logger;
 
     //
     // Private
@@ -152,7 +139,9 @@ window.iris = iris;
             throw "jQuery " + $().jquery + " currently loaded, jQuery " + _JQ_MIN_VER + "+ required";
         }
 
-        _hasConsole = ( window.console && window.console.log );
+        if ( window.console && window.console.log && Function.prototype.bind ) {
+            _logger = Function.prototype.bind.call(window.console.log, window.console);
+        }
 
         var isLocalEnv = urlContains("localhost", "127.0.0.1");
         _logEnabled = isLocalEnv;
@@ -161,9 +150,9 @@ window.iris = iris;
         iris.on("iris-reset", _init);
     }
 
-    function urlContains (args) {
-        for(var i = 0 ; i< args.length; i++) {
-            if ( document.location.href.indexOf(args[i]) > -1 ) {
+    function urlContains () {
+        for(var i = 0 ; i< arguments.length; i++) {
+            if ( document.location.href.indexOf(arguments[i]) > -1 ) {
                 return true;
             }
         }
@@ -202,14 +191,14 @@ window.iris = iris;
     };
 
     iris.log = function () {
-        if ( _hasConsole && _logEnabled ) {
-            window.console.log("[iris]", arguments[0], arguments[1], arguments[2], arguments[3]); // TODO
+        if ( _logger && _logEnabled ) {
+            _logger.apply(this, arguments);
         }
     };
 
     iris.enableLog = function () {
         if ( arguments.length > 0 ) {
-            _logEnabled = urlContains(arguments);
+            _logEnabled = urlContains.apply(this, arguments);
         } else {
             return _logEnabled;
         }
@@ -217,7 +206,7 @@ window.iris = iris;
 
     iris.noCache = function () {
         if ( arguments.length > 0 ) {
-            _cache = !urlContains(arguments);
+            _cache = !urlContains.apply(this, arguments);
         } else {
             return !_cache;
         }
@@ -685,7 +674,8 @@ window.iris = iris;
             if ( !_includes.hasOwnProperty(paths[i]) ) {
                 _dependencyCount++;
 
-                path = String(iris.baseUri() + paths[i]);
+                // If the path doesn't start with http or https, it's concatenated to the iris base uri
+                path = /^https?:\/\//.test(paths[i]) ? paths[i] : String(iris.baseUri() + paths[i]);
 
                 if ( !iris.cache() ) {
                     path += "?_=" + new Date().getTime();
@@ -693,7 +683,7 @@ window.iris = iris;
                     path += "?_=" + iris.cacheVersion();
                 }
                 
-                if ( /.html$/.test(paths[i]) ) {
+                if ( /\.html$/.test(paths[i]) ) {
                     iris.ajax({
                         url: path,
                         dataType: "html",
@@ -894,7 +884,7 @@ window.iris = iris;
 
     function _parseLangTags(p_html) {
         var html = p_html;
-        var matches = html.match(/@@[A-Za-z_\.]+@@/g);
+        var matches = html.match(/@@[0-9A-Za-z_\.]+@@/g);
         if(matches) {
             var f, F = matches.length;
             for(f = 0; f < F; f++) {
@@ -922,6 +912,7 @@ window.iris = iris;
         var uiInstance = new UI();
         uiInstance.id = p_uiId;
         uiInstance.uis = [];
+        uiInstance.uisMap = {};
         uiInstance.el = {};
         uiInstance.events = {};
         uiInstance.con = p_$container;
@@ -980,6 +971,7 @@ window.iris = iris;
         screenObj.id = p_screenPath;
         screenObj.el = {};
         screenObj.uis = [];
+        screenObj.uisMap = {};
         screenObj.events = {};
         screenObj.con = _screenContainer[p_screenPath];
         screenObj.fileJs = jsUrl;
@@ -1112,6 +1104,7 @@ window.iris = iris;
         this.fileTmpl = null;
         this.template = null;
         this.uis = null; // child UIs
+        this.uisMap = null; // UIs sorted by id
         this.con = null; // JQ container
         this.sleeping = null;
         this.el = null; // cached elements
@@ -1189,80 +1182,146 @@ window.iris = iris;
                 throw "Unknown template mode '" + p_mode + "'";
         }
 
-        // create model-components map
-        this.model = {};
-        var models = this.model;
-        $("[data-model]", tmpl).each(function(){
-            var el = $(this);
-            var modelId = el.data("model");
+        // Find components with data-id and data-attr attributes
+        this.el = {};
+        var elements = this.el; // Keep reference
 
-            if ( !models.hasOwnProperty(modelId) ) {
-                models[modelId] = [];
+        this.inflateTargets = {};
+        var inflateTargets = this.inflateTargets; // Keep reference
+
+        // Variables needed to manage attr formatting
+        var FORMAT_REG_EXP = /(date|currency|number)(?:\(([^\)]+)\))/;
+
+        $("*", tmpl).each(function(index, element) {
+            
+            var $el = $(element);
+            var data = $el.data();
+
+            var inflateFormats = {}, inflatesByKeys = {};
+            var target, targetParams, format, formatParams, formatMatches;
+
+            for ( var key in data ) {
+                // data-id
+                if ( key === "id" ) {
+                    elements[data.id] = $el;
+                    continue;
+                }
+
+                // data-*-format
+                if ( /Format$/.test(key) ) {
+                    format = data[key];
+                    formatParams = undefined;
+
+                    if ( format && FORMAT_REG_EXP.test(format) ) {
+                        formatMatches = format.match(FORMAT_REG_EXP);
+
+                        format = formatMatches[1];
+                        formatParams = formatMatches[2]; // TODO manage multiple parameter using: formatParams[2].splice(",");
+                    }
+
+                    inflateFormats[ key.replace(/Format$/, "") ] = { key: format, params: formatParams };
+                    continue;
+                }
+
+                switch (key) {
+                    case "jqText":
+                        target = "_text_";
+                        break;
+                    case "jqHtml":
+                        target = "_html_";
+                        break;
+                    case "jqVal":
+                        target = "_val_";
+                        break;
+                    case "jqToggle":
+                        target = "_toggle_";
+                        break;
+                    case "jqHtml":
+                        target = "_html_";
+                        break;
+                    default:
+                        if ( key.indexOf("jqAttr") === 0 ) {
+                            target = "_attr_";
+                            targetParams = key.substr(6).toLowerCase();
+                        } else if ( key.indexOf("jqCss") === 0 ) {
+                            target = "_css_";
+                            targetParams = key.substr(5).toLowerCase();
+                        } else {
+                            continue;
+                        }
+                }
+
+                if ( !inflateTargets.hasOwnProperty(data[key]) ) {
+                    inflateTargets[ data[key] ] = [];
+                }
+
+                var inflate = { target: target, targetParams: targetParams, el: $el };
+
+                inflateTargets[ data[key] ].push( inflate );
+                inflatesByKeys[key] = inflate;
             }
-            models[modelId].push(el);
-        });
 
+            // After of iterate the element data attributes, set the formatting to each target
+            for ( key in inflateFormats ) {
+                if ( inflatesByKeys.hasOwnProperty(key) ) {
+                    inflatesByKeys[key].format = inflateFormats[key].key;
+                    inflatesByKeys[key].formatParams = inflateFormats[key].params;
+                }
+            }
+
+        });
     };
 
     Component.prototype.inflate = function(data) {
-        if ( this.model === undefined ) {
-            throw "[self.inflate] first set a html node with any data-model attribute";
-        } else {
 
-            var modelId, value, elements, nodeName, i, format, el, formatParams, formatMatches;
-            var formatRegExp = /(date|currency)(?:\(([^\)]+)\))/;
+        var dataKey, f, F, targets, inflate, format, unformattedValue, value;
 
-            for ( modelId in this.model ) {
-                value = iris.val(data, modelId);
+        for ( dataKey in this.inflateTargets ) {
 
-                if ( value !== undefined ) {
-                    elements = this.model[modelId];
-                    formatParams = undefined;
+            unformattedValue = iris.val(data, dataKey);
 
-                    for ( i = 0; i < elements.length; i++ ) {
-                        el = elements[i];
-                        format = el.data("format");
+            if ( unformattedValue ) {
 
-                        if ( format && formatRegExp.test(format) ) {
-                          formatMatches = format.match(formatRegExp);
+                targets = this.inflateTargets[dataKey];
 
-                          format = formatMatches[1];
-                          formatParams = formatMatches[2]; // TODO manage multiple parameter using: formatParams.splice(2);
-                        }
+                for ( f = 0, F = targets.length; f < F; f++ ) {
+                    inflate = targets[f];
 
-                        if ( format ) {
-                            switch ( format ) {
-                                case "date":
-                                    value = iris.date(value, formatParams);
-                                    break;
-                                case "currency":
-                                    value = iris.currency(value);
-                                    break;
-                                case "number":
-                                    value = iris.number(value);
-                                    break;
-                            }
-                        }
-
-                        nodeName = el.prop("nodeName").toLowerCase();
-                        switch (nodeName) {
-                            case "input":
-                                if ( el.prop("type").toLowerCase() === "checkbox" ) {
-                                    el.attr("checked", value);
-                                } else {
-                                    el.val(value);
-                                }
+                    switch ( inflate.format ) {
+                        case "date":
+                            value = iris.date(unformattedValue, inflate.formatParams);
                             break;
-                            case "textarea":
-                                el.val(value);
+                        case "currency":
+                            value = iris.currency(unformattedValue);
                             break;
-                            default:
-                                el.html(value);
+                        case "number":
+                            value = iris.number(unformattedValue);
                             break;
-                        }
+                        default:
+                            value = unformattedValue;
+                    }
+
+                    switch ( inflate.target ) {
+                        case "_text_":
+                            inflate.el.text(value);
+                            break;
+                        case "_html_":
+                            inflate.el.html(value);
+                            break;
+                        case "_val_":
+                            inflate.el.val(value);
+                            break;
+                        case "_toggle_":
+                            inflate.el.toggle(value);
+                            break;
+                        case "_attr_":
+                            inflate.el.attr(inflate.targetParams, value);
+                            break;
+                        case "_css_":
+                            inflate.el.css(inflate.targetParams, value);
                     }
                 }
-            } 
+            }
         }
     };
 
@@ -1318,6 +1377,18 @@ window.iris = iris;
     };
 
     Component.prototype._ui = function(p_id, p_jsUrl, p_uiSettings, p_templateMode) {
+        if ( p_jsUrl === undefined ) {
+            
+            // Get UI
+            return this.uisMap[p_id];
+
+        } else {
+            // Create UI
+            return this._createUi(p_id, p_jsUrl, p_uiSettings, p_templateMode);
+        }
+    };
+
+    Component.prototype._createUi = function(p_id, p_jsUrl, p_uiSettings, p_templateMode) {
         var $container = this.get(p_id);
         
         if($container !== undefined && $container.size() === 1) {
@@ -1325,7 +1396,17 @@ window.iris = iris;
             if (uiInstance._tmplMode === undefined || uiInstance._tmplMode === uiInstance.REPLACE) {
                 this.el[p_id] = undefined;
             }
-            this.uis[this.uis.length] = uiInstance;
+            this.uis.push(uiInstance);
+
+            // Add uiInstance to the UIs map
+            if ( uiInstance._tmplMode === uiInstance.REPLACE ) {
+                this.uisMap[p_id] = uiInstance;
+            } else {
+                if ( !this.uisMap.hasOwnProperty(p_id) ) {
+                    this.uisMap[p_id] = [];
+                }
+                this.uisMap[p_id].push(uiInstance);
+            }
             
             return uiInstance;
         } else {
@@ -1336,37 +1417,47 @@ window.iris = iris;
 
     Component.prototype.destroyUI = function(p_ui) {
         if ( p_ui === undefined ) {
+            // Self destroy
             this.parentComponent.destroyUI(this);
         } else {
-            for(var f = 0, F = this.uis.length; f < F; f++) {
-                if(this.uis[f] === p_ui) {
-                    this.uis.splice(f, 1);
-                    p_ui._destroy();
-                    p_ui.get().remove();
-                    break;
+            var idx;
+
+            // Remove p_ui from the UIs array
+            idx = $.inArray(p_ui, this.uis);
+            if ( idx !== -1 ) {
+                this.uis.splice(idx, 1);
+            }
+
+            // Remove p_ui from the UIs map
+            if ( p_ui._tmplMode === p_ui.REPLACE ) {
+                this.uisMap[p_ui.id] = null;
+                delete this.uisMap[p_ui.id];
+            } else {
+                var uis = this.uisMap[p_ui.id];
+
+                idx = $.inArray(p_ui, uis);
+                if ( idx !== -1 ) {
+                    uis.splice(idx, 1);
                 }
             }
+
+            // Destroy p_ui
+            p_ui._destroy();
+            p_ui.get().remove();
         }
     };
 
-    Component.prototype.destroyUIs = function(p_idOrJq) {
-        var contSelector = typeof p_idOrJq === "string" ? "[data-id=" + p_idOrJq + "]" : p_idOrJq.selector;
-        var ui;
-        for(var f = 0, F = this.uis.length; f < F; f++) {
-            ui = this.uis[f];
-
-            if ( ui.con.selector.indexOf(contSelector) !== -1 ) {
-
-                if ( ui._tmplMode === this.REPLACE ) {
-                    throw "self.destroyUIs cannot delete " + contSelector + " because was replaced by an UI, use self.destroyUI";
-                } else {
-                    this.uis.splice(f--, 1);
-                    F--;
-
-                    ui._destroy();
-                    ui.get().remove();
-                }
+    Component.prototype.destroyUIs = function(id) {
+        var uis = this.uisMap[id];
+        if ( $.isArray(uis) ) {
+            var f, F;
+            for ( f=uis.length-1; f >= 0; f-- ) {
+                this.destroyUI(uis[f]);
             }
+
+        } else if ( uis && uis._tmplMode === this.REPLACE ) {
+            // uis is a single UI
+            this.destroyUI(uis);
         }
     };
 
@@ -1477,7 +1568,8 @@ window.iris = iris;
         }
     };
 
-    function _registerRes (resourceOrPath, path, parentPath) {
+    function _registerRes (resourceOrPath, path) {
+
         if ( typeof resourceOrPath === "string" ) {
             // resourceOrPath == path
             if ( !_includes.hasOwnProperty(resourceOrPath) ) {
@@ -1487,44 +1579,12 @@ window.iris = iris;
 
         } else {
             // resourceOrPath == resource
-            var serv = serv = new iris.Resource();
+            var serv = new iris.Resource();
             serv.cfg = {};
-            serv.settings({ type: "json", path: "" });                
-
-            if (parentPath) {
-                if (!_includes[parentPath]) {
-                    var url = parentPath;
-                    if ( !iris.cache() ) {
-                        url += "?_=" + new Date().getTime();
-                    } else if( iris.cacheVersion() ) {
-                        url += "?_=" + iris.cacheVersion();
-                    }
-                    
-                    iris.ajax({
-                        url: url,
-                        dataType: "script",
-                        async: false
-                    }).done(function(data) {
-                        eval(data);
-                    });
-                }
-
-                var parent = _includes[parentPath]
-                serv.parentPath = parentPath;
-                serv.super = {};
-                for (var prop in parent) {
-                    if (parent.hasOwnProperty(prop)) {
-                        serv[prop] = parent[prop];
-                        serv.super[prop] = parent[prop];
-                    }
-                }
-            }
-
+            serv.settings({ type: "json", path: "" });
             resourceOrPath(serv);
-            
-            _includes[path] = serv;
 
-            return serv;
+            _includes[path] = serv;
         }
 
     }

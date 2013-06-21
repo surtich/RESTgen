@@ -1,7 +1,7 @@
 iris.ui(function(self) {
 	self.create = function() {
 		self.tmpl(iris.path.ui.input_field.html);
-		self.get('field').val(self.setting('value'));
+		self.get('field').val(self.setting('value')).attr("placeholder", self.setting('name'));
 	}
 
 	self.val = function(val) {

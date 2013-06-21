@@ -12,17 +12,24 @@
             "method": [{
                 "name": "Signin",
                 "param": [{
-                    "name": "user"
+                    "name": "user",
+                    "value": "pepe",
+                    "description": "User login",
+                    "location": "body"
                 }, {
-                    "name": "password"
+                    "name": "password",
+                    "value": "123",
+                    "description": "Password user login",
+                    "location": "body"
                 }],
-                "method": "POST",
-                "path": "/signin"
+                "method": "PUT",
+                "path": "/signin",
+                "description": "Connects the user to the app"
             }]
         }, {
-            "name": "App"
-        }, {
             "name": "Log"
+        }, {
+            "name": "App"
         }]
     }]
 }]

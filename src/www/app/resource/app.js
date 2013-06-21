@@ -6,11 +6,8 @@ iris.resource(
   var schemas = null;
   var order = [];
   order.push({"api": "api"});
-  order.push({"version": "api_version"});
-  order.push({"endpoint": "endpoint"});
-  order.push({"method": "method"});
-  order.push({"param": "param"});
-
+  
+  
   self.order = order;
   
 
@@ -37,6 +34,7 @@ iris.resource(
       if (!schemas.api) {
        schemas.api = {};
       }
+      createOrder();
       f_ok();
      });
     });	
@@ -110,6 +108,26 @@ iris.resource(
     f_ok(data);
    });
   }
+
+  function createOrder() {
+    var schema = schemas.api;
+    var changed = true;
+    while (changed) {
+      changed = false;
+      for (var fieldName in schema) {
+        if (schema[fieldName].type == "list") {
+          var elem = {};
+          elem[fieldName] = schema[fieldName].schema;
+          order.push(elem);
+          changed = true;
+          schema = schemas[schema[fieldName].schema];
+          break;
+        }
+      }  
+    }
+    
+  }
+
   
 		
  },

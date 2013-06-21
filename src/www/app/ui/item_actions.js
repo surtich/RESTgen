@@ -2,6 +2,7 @@ iris.ui(function(self) {
 
 	var editable = false;
 	var showDetails = false;
+	var expandAll = false;
 	var ui = null;
 
 	var app = iris.resource(iris.path.resource.app);
@@ -22,6 +23,18 @@ iris.ui(function(self) {
 		self.get('btnDetails').click(function() {
 			showDetails = !showDetails;
 			ui.showValues(showDetails);
+			render();
+		});
+
+		self.get('btnExpandAll').click(function() {
+			showDetails = true;
+			ui.toggleAll(true);
+			render();
+		});
+
+		self.get('btnCollapseAll').click(function() {
+			showDetails = false;
+			ui.toggleAll(false);
 			render();
 		});
 
@@ -62,6 +75,11 @@ iris.ui(function(self) {
 
 		self.render = render;
 	};
+
+	self.showDetails = function(visible) {
+		showDetails = visible;
+		render();
+	}
 
 	
 	function render() {
