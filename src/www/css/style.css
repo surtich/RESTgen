@@ -302,6 +302,11 @@ label {
   
 }
 
+.filter {
+   background-image: url('/img/filter.png');
+  
+}
+
 .close {
   background-image: url('/img/minus.png');
     }

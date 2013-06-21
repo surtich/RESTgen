@@ -4,6 +4,7 @@ iris.ui(function(self) {
 	var showDetails = false;
 	var expandAll = false;
 	var ui = null;
+ var filter = "";
 
 	var app = iris.resource(iris.path.resource.app);
 
@@ -11,6 +12,8 @@ iris.ui(function(self) {
 		ui = self.setting('ui');
 		self.tmpl(iris.path.ui.item_actions.html);
 		self.get("btnDetails").hide();
+  self.get('txtFilter').hide();
+  
 		self.on(iris.evts.changeState, function() {
 			if (!app.isEditable()) {
 				self.get('btnCancel').trigger('click');				
@@ -68,6 +71,19 @@ iris.ui(function(self) {
 
 		self.get('btnDown').click(function() {
 			ui.move(ui.setting("pos") , ui.setting("pos") + 1);
+		});
+  
+  self.get('btnFilter').click(function() {
+   var txtFilter = self.get("txtFilter");
+   if (txtFilter.val().trim() == "") {
+    txtFilter.toggle();
+   } else {
+    if (txtFilter.val() !== filter) {
+     filter = txtFilter.val();
+    } else {
+     txtFilter.val("").hide();
+    }
+   }
 		});
 
 

@@ -13,7 +13,8 @@
 		"HOME": "Home",
 		"TOGGLE_ALL": "Toggle all",
 		"EXPAND_ALL": "Expand all",
-		"COLLAPSE_ALL": "Collapse all"
+		"COLLAPSE_ALL": "Collapse all",
+  "FILTER": "Filter"
 	},
 
 	"STATES":{
