@@ -6,6 +6,7 @@ iris.ui(function(self) {
 	var item = null;
 	var schema = null;
 	var filter = "";
+	var onchange = null;
 
 	self.settings({"table": null});
 	
@@ -13,6 +14,7 @@ iris.ui(function(self) {
 		field = self.setting('field');
 		item = self.setting('item');
 		schema = field.schema;
+		editable = schema.autoedit;
 		self.tmplMode(self.APPEND);
 		if (self.setting("table")) {
       		self.tmpl(iris.path.ui.field_cell.html);
@@ -41,13 +43,21 @@ iris.ui(function(self) {
     		self.setting("parent").get("item").addClass(field.value);
     	}
 
+    	if (schema.autoedit) {
+    		onchange = function (value) {
+				item[field.name] = value;
+				field.value = value;
+				self.get('value').text(value);
+    		}
+    	}
 
-		editor = self.ui('editor', iris.path.ui[(field.schema && field.schema.view || 'input') + '_field'].js, {value: field.value, name: field.name}, self.APPEND);
+
+		editor = self.ui('editor', iris.path.ui[(field.schema && field.schema.view || 'input') + '_field'].js, {value: field.value, name: field.name, "onchange": onchange}, self.APPEND);
 		render();
 	}
 
 	self.setEditable = function(state) {
-		editable = state;
+		editable = schema.autoedit || state;
 		render();
 	}
 

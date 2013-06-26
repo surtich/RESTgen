@@ -20,6 +20,7 @@ iris.screen(function(self) {
 	  	var type = "api";
 	  	var key = "name";
 	  	var nextType = "api";
+	  	var itemParent = null;
 
 	  	for (var i = 0; i < order.length - 1; i++) {
 	  		var elem = order[i];
@@ -42,6 +43,8 @@ iris.screen(function(self) {
 	  							}
 	  						}
 	  					}
+	  					items.parent = itemParent;
+	  					itemParent = items;
 	  					items = items[list2];
 	  					schema = schemas[next[list2]];
 	  					
@@ -53,7 +56,8 @@ iris.screen(function(self) {
 	  			}
 	  		}
 	  	}
-	  	ui = self.ui("values", iris.path.ui.list.js, {"list": {'type': nextType, "name": params[type], "hideName": true, "items": items, "schema": schema}, "link_schema": location.hash.replace(/^.*\?/,"") + "&" + nextType});
+
+	  	ui = self.ui("values", iris.path.ui.list.js, {"list": {'type': nextType, "name": params[type], "hideName": true, "items": items, "itemParent": itemParent, "schema": schema}, "link_schema": location.hash.replace(/^.*\?/,"") + "&" + nextType});
 	  });
   	});
  }

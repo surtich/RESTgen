@@ -22,7 +22,7 @@
                     "description": "Password user login",
                     "location": "body"
                 }],
-                "method": "PUT",
+                "method": "POST",
                 "path": "/signin",
                 "description": "Connects the user to the app"
             }]

@@ -12,12 +12,14 @@ iris.ui(function(self) {
  var lists = [];
  var view = null;
  
- self.settings({"view": null, "header": null});
+ self.settings({"view": null, "header": null, "item": null, "itemParent": null});
 
  self.create = function() {
   item = self.setting('item');
+  item.parent = self.setting('itemParent');
   view = self.setting('view');
   schema = self.setting('schema');
+
   self.tmplMode(self.APPEND);
 
   if (view === "table") {
@@ -49,6 +51,15 @@ iris.ui(function(self) {
       }
       if (schema[fieldName].details === false) {
         self.details = false;
+      }
+      if (schema[fieldName].more) {
+        var tokens = schema[fieldName].more.split(".");
+        var presenter = iris.path;
+        for (var i = 0; i < tokens.length; i++) {
+          var token = tokens[i];
+          presenter = presenter[token];
+        }
+        self.ui("more", presenter, {item: item});
       }
         
     }
@@ -87,8 +98,7 @@ iris.ui(function(self) {
         if (!item[fieldName]) {
           item[fieldName] = [];
         }
-
-        lists.push(self.ui(container, iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "items": item[fieldName], "schema": listSchema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName, view: schema[fieldName].view}));
+        lists.push(self.ui(container, iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "itemParent": item, "items": item[fieldName], "schema": listSchema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName, view: schema[fieldName].view}));
       });
     }
   

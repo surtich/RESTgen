@@ -50,6 +50,10 @@ iris.path = {
 		input_field: {
 			js: 'app/ui/input_field.js',
 			html: 'app/ui/input_field.html'
+		},
+		"try": {
+			js: 'app/ui/try.js',
+			html: 'app/ui/try.html'
 		}
 	},
 	resource: {

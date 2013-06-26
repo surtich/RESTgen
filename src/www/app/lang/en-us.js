@@ -21,6 +21,7 @@
 		"NEW": "new",
 		"COPY": "copy"
 	},
-	"CHOOSE": "Choose an API"
+	"CHOOSE": "Choose an API",
+	"TRY": "Try it!"
 	
 }

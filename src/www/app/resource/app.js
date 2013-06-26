@@ -41,14 +41,19 @@ iris.resource(
    }
   };
 
+
+
   self.save = function() {
+  
+    var copy = $.extend({}, apis);
+    cleanParents(copy);
    $.ajax({
     url: '/save',
     type: 'POST',
-    data: apis
+    data: copy
    }).done(function(data) {
     alert(data);
-   }).dee	;
+   })	;
   }
 
 		
@@ -128,7 +133,18 @@ iris.resource(
     
   }
 
-  
+  function cleanParents(object) {
+   for (var fieldName in object) {
+    if (fieldName == "parent" && typeof object[fieldName] == "object") {
+      delete object[fieldName];
+    } else {
+      var field = object[fieldName];
+      if (Object.prototype.toString.call( field ) === '[object Array]' || Object.prototype.toString.call( field ) === '[object Object]') {
+        cleanParents(field);
+      }
+    }
+   }
+  }
 		
  },
  iris.path.resource.app);

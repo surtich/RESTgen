@@ -2,7 +2,7 @@ iris.ui(function(self) {
 	var list = null;
 	var items = [];
 
-	self.settings({"view": null});
+	self.settings({"view": null, schema: null});
 
 	self.create = function() {
 
@@ -57,7 +57,7 @@ iris.ui(function(self) {
 	}
 
 	function add(item, schema, pos, size) {
-		var ui = self.ui('values', iris.path.ui.item.js, {'link_schema': self.setting('link_schema'), 'item': item, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render, 'view': self.setting("view"), header: self.header});
+		var ui = self.ui('values', iris.path.ui.item.js, {'link_schema': self.setting('link_schema'), 'item': item, 'itemParent': list.itemParent, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render, 'view': self.setting("view"), header: self.header});
 		
 		items.push(ui);
 	}
