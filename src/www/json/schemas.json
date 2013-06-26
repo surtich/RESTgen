@@ -16,10 +16,12 @@
    "key": true,
    "show": false
   },
-  "description": {},
+  "description": {
+    "view": "textarea"
+  },
   "protocol": {
    "type": "string",
-   "view": "input",
+   "view": "select",
    "values": "http, https"
   },
   "host": {
@@ -62,14 +64,17 @@
     "inline": true,
     "pre": true,
     "value_as_css": true,
-    "default": "GET"
+    "default": "GET",
+    "view": "select",
+    "values": "GET, POST, PUT, DELETE"
   },
   "path" : {
     "inline": true
   },
   "description": {
     "show_title": false,
-    "inline" : true
+    "inline" : true,
+    "view": "textarea"
     },
   "param": {
     "type": "list",
@@ -92,7 +97,10 @@
     "autoedit": true
     },
   "location": {
-    "inline" : true
+    "inline" : true,
+    "view": "select",
+    "default": "body",
+    "values": "query, body, path, header"
     },
   "description": {
     "inline" : true

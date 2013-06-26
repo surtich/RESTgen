@@ -4,6 +4,7 @@ var commons  = require('../lib/commons.js')
 ,   fs  = commons.fs
 ,   path  = commons.path
 ,   beautify  = commons.beautify
+,   request  = commons.request
 ,   config  = require('../lib/config/local.json');
 
 
@@ -40,6 +41,64 @@ app.post("/save", function(req, res, next) {
  }
  res.send("Ok");
 });
+
+// Process the API request
+app.post('/processReq', processRequest, function(req, res) {
+    var result = {
+        headers: req.resultHeaders,
+        response: req.result,
+        call: req.call,
+        code: req.res.statusCode
+    };
+
+    res.send(result);
+});
+
+function processRequest(req, res, next) {
+  
+  var data = "";
+
+  for (var fieldName in req.body.data) {
+    var fieldValue = req.body.data[fieldName];
+    if (data) {
+      data += "&";
+    }
+    data += fieldName + "=" + fieldValue;
+  }
+
+  console.log("aqui", data)
+
+
+  var method = request[req.body.type.toLowerCase()];
+
+  method(
+  {
+   headers : {
+    'content-type' : 'application/x-www-form-urlencoded'
+   },
+   url : req.body.url,
+   body: data
+  },
+  function(err, r, body){
+   if(err){
+    console.log('error:', err);
+   } else {
+    console.log('statusCode:', r.statusCode);
+    console.log('body:', body);
+   }
+   res.write(JSON.stringify({
+    error: err,
+    statusCode: r.statusCode,
+    body: body
+   }));
+   res.end();
+  }
+ );
+ 
+
+}
+
+
 
 function removeApis(apiKey) {
  var apiconfig = JSON.parse(readFile(path.join(__dirname, '/../www/json/apiconfig.json')));

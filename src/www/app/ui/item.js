@@ -25,8 +25,8 @@ iris.ui(function(self) {
   if (view === "table") {
     self.tmpl(iris.path.ui.item_row.html);
     showDetails = true;
-
-
+    self.get("line").addClass("field");
+    self.get("actions").addClass("field");
   } else {
     self.tmpl(iris.path.ui.item.html);  
   }
@@ -59,7 +59,7 @@ iris.ui(function(self) {
           var token = tokens[i];
           presenter = presenter[token];
         }
-        self.ui("more", presenter, {item: item});
+        self.ui("more", presenter, {item: item}, self.APPEND);
       }
         
     }
@@ -123,13 +123,22 @@ iris.ui(function(self) {
   self.actions = actions;
 
 
+  self.on(iris.evts.changeState, function() {
+    self.get("more").toggle(!app.isEditable());  
+  });
+
   render();
 
  }
 
  function showValues(visible) {
-  if (self.get('values').css("display") === "none" && visible || self.get('values').css("display") === "block" && !visible ) {
-   self.get('values').slideToggle();
+  var id = 'expand';
+  if (view == "table") {
+    id = 'values';
+  }
+  var container = self.get(id);
+  if (container.css("display") === "none" && visible || container.css("display") === "block" && !visible ) {
+   container.slideToggle();
    showDetails = visible;
   }
  }
@@ -220,9 +229,11 @@ iris.ui(function(self) {
  function render() {
   if (view === "table") {
     showDetails = true;
+    self.get('values').toggle(showDetails);
+  } else {
+    self.get('expand').toggle(showDetails);
   }
 
-  self.get('values').toggle(showDetails);
   for (var i = 0; i < fields.length; i++) {
    var field = fields[i];
    field.setEditable(app.isEditable() && editable);	

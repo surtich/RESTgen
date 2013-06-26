@@ -318,7 +318,7 @@ label {
 .item {
   margin-left: 10px;
   margin-top: 3px;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 .field {
@@ -326,6 +326,7 @@ label {
    margin-top: 5px;
   margin-bottom: 5px;
 }
+
 
 input[type='button'], button   {
   margin-top: 5px;
@@ -467,6 +468,33 @@ border-color: #c3d9ec;
   border-color: #c3d9ec;
 }
 
+table {
+  border-spacing: 0px;
+}
+
+
+td.field {
+  font-weight: bold;
+  padding: 5px;
+  vertical-align: middle;
+}
+
+.POST td.field {
+  border-bottom: 1px solid #9ddab1;
+}
+
+.GET td.field {
+  border-bottom: 1px solid #9ac0de;
+}
+
+.PUT td.field {
+  border-bottom: 1px solid #e3c399;
+}
+
+.DELETE td.field {
+  border-bottom: 1px solid #d6a1a1;
+}
+
 .table {
   display: table;
   width: 100%;
@@ -485,4 +513,8 @@ border-color: #c3d9ec;
 }
 .cell {
   padding-left: 80px;
+}
+
+.parameters {
+  width: 100%;
 }

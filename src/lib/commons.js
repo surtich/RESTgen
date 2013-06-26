@@ -3,3 +3,4 @@ module.exports.async     = require('async');    		// asynchronous management
 module.exports.beautify  = require('js-beautify').js_beautify;
 module.exports.fs        = require('fs');
 module.exports.path      = require('path');
+module.exports.request      = require('request');

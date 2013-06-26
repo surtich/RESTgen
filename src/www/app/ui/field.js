@@ -52,7 +52,7 @@ iris.ui(function(self) {
     	}
 
 
-		editor = self.ui('editor', iris.path.ui[(field.schema && field.schema.view || 'input') + '_field'].js, {value: field.value, name: field.name, "onchange": onchange}, self.APPEND);
+		editor = self.ui('editor', iris.path.ui[(field.schema && field.schema.view || 'input') + '_field'].js, {value: field.value, name: field.name, schema: schema, "onchange": onchange}, self.APPEND);
 		render();
 	}
 

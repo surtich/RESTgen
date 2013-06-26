@@ -6,6 +6,7 @@
        	"async"	 	: "0.2.x"
 	,  	"express" 	: "3.x"
 	,	"js-beautify": "*"
+  , "request":"*"
 	}
 ,
 	"engines" : {

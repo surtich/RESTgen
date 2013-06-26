@@ -12,13 +12,13 @@
             "method": [{
                 "name": "Signin",
                 "param": [{
-                    "name": "user",
-                    "value": "pepe",
+                    "name": "e",
+                    "value": "surtich@gmail.com",
                     "description": "User login",
                     "location": "body"
                 }, {
-                    "name": "password",
-                    "value": "123",
+                    "name": "p",
+                    "value": "1",
                     "description": "Password user login",
                     "location": "body"
                 }],

@@ -51,6 +51,14 @@ iris.path = {
 			js: 'app/ui/input_field.js',
 			html: 'app/ui/input_field.html'
 		},
+		select_field: {
+			js: 'app/ui/select_field.js',
+			html: 'app/ui/select_field.html'
+		},
+		textarea_field: {
+			js: 'app/ui/textarea_field.js',
+			html: 'app/ui/textarea_field.html'
+		},
 		"try": {
 			js: 'app/ui/try.js',
 			html: 'app/ui/try.html'
