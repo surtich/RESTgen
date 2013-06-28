@@ -14,7 +14,7 @@ iris.ui(function(self) {
 		self.get("btnDetails").hide();
   		self.get('txtFilter').hide();
 
-  		if (ui.filter === false) {
+  		if (ui.canFilter === false) {
   			self.get('filter').hide();
   		}
 
@@ -101,6 +101,9 @@ iris.ui(function(self) {
      filter ="";
     }
     ui.filter(filter, true);
+    if (ui.canFilter === false) {
+ 		self.get("filter").hide();
+    }
     
    }
 		});
@@ -108,6 +111,10 @@ iris.ui(function(self) {
  	self.filter = function(f) {
  		filter = f;
  		self.get("txtFilter").val(filter).toggle(filter != "");
+ 		if (ui.canFilter === false && ui.unFilter === true) {
+ 			self.get("txtFilter").hide();
+ 			self.get("filter").toggle(filter != "");
+ 		}
  	}
 
 

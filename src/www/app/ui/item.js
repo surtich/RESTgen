@@ -11,6 +11,7 @@ iris.ui(function(self) {
  var link = true;
  var lists = [];
  var view = null;
+ var listItemsLoaded = false;
  
  self.settings({"view": null, "header": null, "item": null, "itemParent": null});
 
@@ -29,86 +30,117 @@ iris.ui(function(self) {
     self.get("actions").addClass("field");
   } else {
     self.tmpl(iris.path.ui.item.html);  
+
   }
+
 
   self.get().addClass("item");
+
+
+
   
-
-
   for (var fieldName in schema) {
-    if (schema[fieldName].key) {
-      self.get('name').text(item[fieldName]);
-      key = fieldName;
-      if (schema[fieldName].link === false) {
-        link = schema[fieldName].link;
-        self.get('name').addClass("no_events");
-      }
-      if (schema[fieldName].filter === false) {
-        self.filter = false;
-      }
-      if (schema[fieldName].expand === false) {
-        self.expand = false;
-      }
-      if (schema[fieldName].details === false) {
-        self.details = false;
-      }
-      if (schema[fieldName].more) {
-        var tokens = schema[fieldName].more.split(".");
-        var presenter = iris.path;
-        for (var i = 0; i < tokens.length; i++) {
-          var token = tokens[i];
-          presenter = presenter[token];
+      if (schema[fieldName].key) {
+        self.get('name').text(item[fieldName]);
+        key = fieldName;
+        if (schema[fieldName].link === false) {
+          link = schema[fieldName].link;
+          self.get('name').addClass("no_events");
         }
-        self.ui("more", presenter, {item: item}, self.APPEND);
+        if (schema[fieldName].filter === false) {
+          self.canFilter = false;
+        }
+        if (schema[fieldName].unfilter) {
+          self.unFilter = true;
+        }
+        if (schema[fieldName].expand === false) {
+          self.expand = false;
+        }
+        if (schema[fieldName].details === false) {
+          self.details = false;
+        }
+        if (schema[fieldName].more) {
+          var tokens = schema[fieldName].more.split(".");
+          var presenter = iris.path;
+          for (var i = 0; i < tokens.length; i++) {
+            var token = tokens[i];
+            presenter = presenter[token];
+          }
+          self.ui("more", presenter, {item: item}, self.APPEND);
+        }
+        changeLink(); 
       }
-        
+      var container = 'values';
+      if (view == "table") {
+        container = 'values';
+      } else {
+        if (schema[fieldName].inline) {
+          if (schema[fieldName].pre) {
+            container = "pre-inline-values";
+          } else {
+            container = "inline-values";
+          }
+        }  
+      }
+
+      if (schema[fieldName].type !== "list") {
+        fields.push(self.ui(container, iris.path.ui.field.js, {
+          field: {
+           name: fieldName,
+           value: item[fieldName] || "",
+           schema: schema[fieldName]
+          },
+          item: item,
+          parent: self,
+          "table": view == "table"
+         }));
+
+      }
+      
     }
-    changeLink();
 
-    var container = 'values';
-    if (view == "table") {
-      container = 'values';
-    } else {
-      if (schema[fieldName].inline) {
-        if (schema[fieldName].pre) {
-          container = "pre-inline-values";
-        } else {
-          container = "inline-values";
-        }
-      }  
-    }
-    
-
-    if (schema[fieldName].type !== "list") {
-      fields.push(self.ui(container, iris.path.ui.field.js, {
-        field: {
-         name: fieldName,
-         value: item[fieldName] || "",
-         schema: schema[fieldName]
-        },
-        item: item,
-        parent: self,
-        "table": view == "table"
-       }));
-
-    } else {
-      var nameSchema = schema[fieldName].schema;
-      app.getSchemas(function(schemas) {
-        var listSchema = schemas[nameSchema];
-        if (!item[fieldName]) {
-          item[fieldName] = [];
-        }
-        lists.push(self.ui(container, iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "itemParent": item, "items": item[fieldName], "schema": listSchema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName, view: schema[fieldName].view}));
-      });
-    }
-  
-  }
-
-  
   actions = self.ui('actions', iris.path.ui.item_actions.js, {
    'ui': self
   }, self.APPEND);
 
+
+  function createListItems() {
+    if (listItemsLoaded) {
+      return;
+    } else {
+      listItemsLoaded = true;
+    }
+    for (var fieldName in schema) {
+      
+      var container = 'values';
+      if (view == "table") {
+        container = 'values';
+      } else {
+        if (schema[fieldName].inline) {
+          if (schema[fieldName].pre) {
+            container = "pre-inline-values";
+          } else {
+            container = "inline-values";
+          }
+        }  
+      }
+      
+
+      if (schema[fieldName].type == "list") {
+        var nameSchema = schema[fieldName].schema;
+        app.getSchemas(function(schemas) {
+          var listSchema = schemas[nameSchema];
+          if (!item[fieldName]) {
+            item[fieldName] = [];
+          }
+          lists.push(self.ui(container, iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "itemParent": item, "items": item[fieldName], "schema": listSchema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName, view: schema[fieldName].view}));
+        });
+      }
+    
+    }
+  }
+  
+  
   self.item = item;
   self.showValues = showValues;
   self.toggleAll = toggleAll;
@@ -121,17 +153,21 @@ iris.ui(function(self) {
   self.move = move;
   self.render = render;
   self.actions = actions;
+  self.createListItems = createListItems;
 
 
   self.on(iris.evts.changeState, function() {
     self.get("more").toggle(!app.isEditable());  
   });
 
-  render();
+  //render();
 
  }
 
  function showValues(visible) {
+  if (!listItemsLoaded) {
+    self.createListItems();
+  }
   var id = 'expand';
   if (view == "table") {
     id = 'values';
@@ -157,6 +193,9 @@ iris.ui(function(self) {
  }
 
  function filter(filter, retain) {
+  if (!listItemsLoaded) {
+    self.createListItems();
+  }
   var match = !filter ;
   for (var k = 0; k < fields.length; k++) {
         var field = fields[k];

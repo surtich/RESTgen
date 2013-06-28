@@ -56,28 +56,54 @@ app.post('/processReq', processRequest, function(req, res) {
 
 function processRequest(req, res, next) {
   
-  var data = "";
+  var url = req.body.url;
 
-  for (var fieldName in req.body.data) {
-    var fieldValue = req.body.data[fieldName];
-    if (data) {
-      data += "&";
-    }
-    data += fieldName + "=" + fieldValue;
+  var body = "";
+
+  var headers = {
+    'content-type' : 'application/x-www-form-urlencoded'
   }
 
-  console.log("aqui", data)
+  if (req.body.body) {
+    for (var fieldName in req.body.body) {
+      var fieldValue = req.body.body[fieldName];
+      if (body) {
+        body += "&";
+      }
+      body += fieldName + "=" + fieldValue;
+    }
+  }
+
+  if (req.body.header) {
+    for (var fieldName in req.body.header) {
+      var fieldValue = req.body.header[fieldName];
+      headers[fieldName] = fieldValue;
+    }
+  }
+
+  if (req.body.path) {
+    for (var fieldName in req.body.path) {
+      var regx = new RegExp('(:' + fieldName + ")($|/)");
+      var fieldValue = req.body.path[fieldName];
+      url = url.replace(regx, function(match, p1, p2, offset, string) {
+        return fieldValue + p2;
+
+      });
+    }
+  }
 
 
-  var method = request[req.body.type.toLowerCase()];
+console.log("*********************AQUI*******************");
+  console.log("headers", headers, "body",body)
 
-  method(
+
+  request(
   {
-   headers : {
-    'content-type' : 'application/x-www-form-urlencoded'
-   },
-   url : req.body.url,
-   body: data
+   headers : headers,
+   url : url,
+   body: body,
+   method: req.body.type,
+   jar: false
   },
   function(err, r, body){
    if(err){
@@ -85,11 +111,14 @@ function processRequest(req, res, next) {
    } else {
     console.log('statusCode:', r.statusCode);
     console.log('body:', body);
+    console.log('headers:', r.headers);
+    console.log("*********************END*******************");
    }
    res.write(JSON.stringify({
     error: err,
     statusCode: r.statusCode,
-    body: body
+    body: body,
+    headers: r.headers
    }));
    res.end();
   }

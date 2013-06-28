@@ -48,6 +48,10 @@ iris.ui(function(self) {
 	function createUIs() {
 		items = [];
 		self.items = items;
+		if (!list.items) {
+			list.items = [];
+		}
+
 		for (var i = 0; i < list.items.length; i++) {
 			var item = list.items[i];
 			add(item, list.schema, i);
@@ -60,6 +64,8 @@ iris.ui(function(self) {
 		var ui = self.ui('values', iris.path.ui.item.js, {'link_schema': self.setting('link_schema'), 'item': item, 'itemParent': list.itemParent, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render, 'view': self.setting("view"), header: self.header});
 		
 		items.push(ui);
+
+		return ui;
 	}
 
 	function newItem(clon) {

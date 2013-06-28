@@ -22,6 +22,10 @@
 		"COPY": "copy"
 	},
 	"CHOOSE": "Choose an API",
-	"TRY": "Try it!"
+	"TRY": "Try it!",
+	"CLEAR_RESULTS": "clear results",
+	"RESPONSE_CODE": "Response Code",
+	"RESPONSE_HEADERS": "Response Headers",
+	"RESPONSE_BODY": "Response Body"
 	
 }

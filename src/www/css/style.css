@@ -406,10 +406,6 @@ input[type='button'], button   {
 .breadcrumb li a:hover { background: hsla(34,85%,25%,1); }
 .breadcrumb li a:hover:after { border-left-color: hsla(34,85%,25%,1) !important; }
 
-.no_events {
-   pointer-events: none;
-   cursor: default;
-}
 
 .item.POST {
   background-color: #e7f6ec;
@@ -518,3 +514,25 @@ td.field {
 .parameters {
   width: 100%;
 }
+
+.result {
+  margin: 10px;
+}
+.result pre {
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.result h4 {
+  margin-top: 10px;
+}
+
+.more {
+  margin: 10px;
+}
+
+.no_events {
+  pointer-events: none;
+  cursor: default;
+}
+

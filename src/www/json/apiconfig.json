@@ -11,25 +11,219 @@
             "name": "User",
             "method": [{
                 "name": "Signin",
+                "method": "POST",
+                "path": "/signin",
+                "description": "Connects the user to the app",
                 "param": [{
                     "name": "e",
                     "value": "surtich@gmail.com",
-                    "description": "User login",
-                    "location": "body"
+                    "location": "body",
+                    "description": "User email"
                 }, {
                     "name": "p",
                     "value": "1",
-                    "description": "Password user login",
-                    "location": "body"
-                }],
+                    "location": "body",
+                    "description": "User password"
+                }]
+            }, {
+                "name": "Signout",
                 "method": "POST",
-                "path": "/signin",
-                "description": "Connects the user to the app"
+                "path": "/signout",
+                "description": "Disconnects the user"
+            }, {
+                "name": "Get users",
+                "method": "GET",
+                "path": "/user",
+                "description": "Gets all users from QLog",
+                "param": [{
+                    "name": "Cookie",
+                    "value": "pastry.sid=b0f10daa-6b1b-4a06-b46b-3c7d20eddae3",
+                    "location": "header",
+                    "description": "The pastry.sid of the connected admin user"
+                }]
+            }, {
+                "name": "Signup",
+                "method": "POST",
+                "path": "/signup",
+                "description": "Creates a new QLog user",
+                "param": [{
+                    "name": "e",
+                    "value": "surtich2@gmail.com",
+                    "location": "body",
+                    "description": "User email"
+                }, {
+                    "name": "p",
+                    "value": "1",
+                    "location": "body",
+                    "description": "User password"
+                }]
+            }, {
+                "name": "Me",
+                "method": "GET",
+                "path": "/user/me",
+                "description": "Gets the information of the connected user",
+                "param": [{
+                    "name": "Cookie",
+                    "value": "pastry.sid=3ab5bbe8-544c-4942-be11-aff7c5222094",
+                    "location": "header",
+                    "description": "The pastry.sid of the connected user"
+                }]
             }]
         }, {
-            "name": "Log"
+            "name": "App",
+            "method": [{
+                "name": "Get Apps",
+                "method": "GET",
+                "path": "/app/",
+                "description": "Gets all apps from an user",
+                "param": [{
+                    "name": "Cookie",
+                    "value": "pastry.sid=3ab5bbe8-544c-4942-be11-aff7c5222094",
+                    "location": "path",
+                    "description": "The pastry.sid of the connected user"
+                }]
+            }, {
+                "name": "Get App",
+                "method": "GET",
+                "path": "/app/:appId",
+                "description": "Gets an app from its _id",
+                "param": [{
+                    "name": "appId",
+                    "value": "51ce042afc57dcec42000001",
+                    "location": "path",
+                    "description": "The _id key of the app"
+                }]
+            }, {
+                "name": "New App",
+                "method": "PUT",
+                "path": "/app",
+                "description": "Creates a new app",
+                "param": [{
+                    "name": "n",
+                    "value": "test",
+                    "location": "body",
+                    "description": "Application Name"
+                }, {
+                    "name": "cb",
+                    "value": "test",
+                    "location": "body",
+                    "description": "Callback Url"
+                }, {
+                    "name": "Cookie",
+                    "value": "pastry.sid=14b785a5-c2f0-4b83-8c64-76b108077aad",
+                    "location": "header",
+                    "description": "The pastry.sid of the connected user"
+                }]
+            }, {
+                "name": "Update App",
+                "method": "POST",
+                "path": "/app/:appId",
+                "description": "Updates an app",
+                "param": [{
+                    "name": "appId",
+                    "value": "51cde1862d93c86262000007",
+                    "location": "path",
+                    "description": "The _id key of the app"
+                }, {
+                    "name": "n",
+                    "value": "test2",
+                    "location": "body",
+                    "description": "New application Name (empty for no changes)"
+                }, {
+                    "name": "cb",
+                    "value": "test",
+                    "location": "body",
+                    "description": "New callback Url (empty for no changes)"
+                }]
+            }, {
+                "name": "Renew secretkey",
+                "method": "POST",
+                "path": "/app/:appId/resetkey",
+                "description": "Renews the secretKey",
+                "param": [{
+                    "name": "appId",
+                    "value": "51cde1862d93c86262000007",
+                    "location": "path",
+                    "description": "The _id key of the app"
+                }]
+            }, {
+                "name": "Del App",
+                "method": "DELETE",
+                "path": "/app/:appId",
+                "description": "Deletes an app",
+                "param": [{
+                    "name": "appId",
+                    "value": "51cde1862d93c86262000007",
+                    "location": "path",
+                    "description": "The _id key of the app"
+                }]
+            }, {
+                "name": "RabbitMQ URL",
+                "method": "POST",
+                "path": "/app/:appId/getcredential",
+                "description": "Returns the RabbitMQ URL and the exchange identifier of the app",
+                "param": [{
+                    "name": "appId",
+                    "value": "abPBGnkwnVqKusWA",
+                    "location": "path",
+                    "description": "The clientId key of the app"
+                }, {
+                    "name": "p",
+                    "value": "asT4nflXWlEl5BXraRJihAzOYMTwJelk",
+                    "location": "body",
+                    "description": "The secretKey of the app"
+                }]
+            }]
         }, {
-            "name": "App"
+            "name": "Log",
+            "method": [{
+                "name": "Add Log",
+                "method": "PUT",
+                "path": "/app/:appId/log",
+                "description": "Adds a log to an application",
+                "param": [{
+                    "name": "appId",
+                    "value": "yOy-C4Ls0UxY-7pT",
+                    "location": "path",
+                    "description": "The clientId of the app"
+                }, {
+                    "name": "secretKey",
+                    "value": "ff-03tgQgl0UT_ZW5mZUFf0qbd7tfSZJ",
+                    "location": "body",
+                    "description": "The secretKey of the app"
+                }, {
+                    "name": "msg",
+                    "value": "Log test2",
+                    "location": "body",
+                    "description": "The log message"
+                }, {
+                    "name": "time",
+                    "value": "28/06/2013 23:31:49",
+                    "location": "body",
+                    "description": "The date/time when the record was created"
+                }, {
+                    "name": "tags",
+                    "value": "test, qlog",
+                    "location": "body",
+                    "description": "A list of comma-separated tags associated with the application"
+                }]
+            }, {
+                "name": "Get Logs",
+                "method": "GET",
+                "path": "/app/:appId/log",
+                "description": "Gets the logs from application",
+                "param": [{
+                    "name": "appId",
+                    "value": "yOy-C4Ls0UxY-7pT",
+                    "location": "path",
+                    "description": "The clientId of the app"
+                }, {
+                    "name": "Cookie",
+                    "value": "pastry.sid=14b785a5-c2f0-4b83-8c64-76b108077aad",
+                    "location": "header",
+                    "description": "The pastry.sid of the connected user"
+                }]
+            }]
         }]
     }]
 }]

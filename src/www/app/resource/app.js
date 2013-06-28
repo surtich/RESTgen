@@ -95,18 +95,18 @@ iris.resource(
     var api = version.parent;
     var options = {
       type: method.method,
-      url: version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + method.path
+      url: version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + method.path,
+      body: {},
+      header: {},
+      path: {}
     };
 
-    var data = {};
 
     for (var i = 0; i < method.param.length; i++) {
       var param = method.param[i];
-      data[param.name] = param.value;
+      options[param.location][param.name] = param.value;
     }
-    options.data = data;
-    console.log(options);
-
+    
     var settings = {
       type: "POST",
       url: "/processReq",
@@ -114,15 +114,16 @@ iris.resource(
       dataType: "json"
     };
 
+    console.log("settings",settings)
+
     $.ajax(settings).done(function(data, textStatus, jqXHR) {
-      console.log("data", data);
       if (p_cbk) {
-        p_cbk();
+        p_cbk(data);
       }
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log("error");
       if (p_cbk) {
-        p_cbk();
+        p_cbk({statusCode: "error " + textStatus});
       }
     });
 
