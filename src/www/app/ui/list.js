@@ -22,9 +22,12 @@ iris.ui(function(self) {
 		self.get('list').addClass("list " + list.type);
 		self.get('list').toggle(false);
 		self.get('list').attr('href',"#").text(list.name);
-		self.ui('actions', iris.path.ui.list_actions.js, {'add': newItem, 'list': list});
+		if (window.location.href.indexOf("#/details") != -1 || list.type == "api") {
+			self.ui('actions', iris.path.ui.list_actions.js, {'add': newItem, 'list': list});	
+			createUIs();
+		}
 	
-		createUIs();
+		
 		
 	}
 

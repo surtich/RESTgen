@@ -29,15 +29,19 @@ app.post("/save", function(req, res, next) {
  var apis = req.body.items;
 
  var apiKey = getApiKey();
-	
+
+if (!apiKey || !apis) {
+  res.send(500, "Bad request");
+}
+
 
  if (apiKey) {
-  removeApis(apiKey);
+  //removeApis(apiKey);
   saveApiConfig(apis);
-  for (var i = 0; i < apis.length; i++) {
+  /*for (var i = 0; i < apis.length; i++) {
    var api = apis[i];
    saveApi(api, apiKey);
-  }
+  }*/
  }
  res.send("Ok");
 });
@@ -55,36 +59,58 @@ app.post('/processReq', processRequest, function(req, res) {
 });
 
 function processRequest(req, res, next) {
-  
-  var url = req.body.url;
-
-  var body = "";
+  var url = req.body.options.url;
 
   var headers = {
     'content-type' : 'application/x-www-form-urlencoded'
   }
 
-  if (req.body.body) {
-    for (var fieldName in req.body.body) {
-      var fieldValue = req.body.body[fieldName];
-      if (body) {
-        body += "&";
+  var json = req.body.options.json === "true";
+
+
+  var body = "";
+
+  if (json) {
+    body = {};
+  }
+
+
+  var query = {};
+
+
+  
+  if (req.body.options.body) {
+    for (var fieldName in req.body.options.body) {
+      if (json) {
+        body[fieldName] = JSON.parse(req.body.options.body[fieldName]);
+      } else {
+        var fieldValue = req.body.options.body[fieldName];
+        if (body) {
+          body += "&";
+        }
+        body += fieldName + "=" + fieldValue;
       }
-      body += fieldName + "=" + fieldValue;
     }
   }
 
-  if (req.body.header) {
-    for (var fieldName in req.body.header) {
-      var fieldValue = req.body.header[fieldName];
+  if (req.body.options.header) {
+    for (var fieldName in req.body.options.header) {
+      var fieldValue = req.body.options.header[fieldName];
       headers[fieldName] = fieldValue;
     }
   }
 
-  if (req.body.path) {
-    for (var fieldName in req.body.path) {
+  if (req.body.options.query) {
+    for (var fieldName in req.body.options.query) {
+      var fieldValue = req.body.options.query[fieldName];
+      query[fieldName] = fieldValue;
+    }
+  }
+
+  if (req.body.options.path) {
+    for (var fieldName in req.body.options.path) {
       var regx = new RegExp('(:' + fieldName + ")($|/)");
-      var fieldValue = req.body.path[fieldName];
+      var fieldValue = req.body.options.path[fieldName];
       url = url.replace(regx, function(match, p1, p2, offset, string) {
         return fieldValue + p2;
 
@@ -93,32 +119,34 @@ function processRequest(req, res, next) {
   }
 
 
-console.log("*********************AQUI*******************");
-  console.log("headers", headers, "body",body)
-
 
   request(
   {
    headers : headers,
    url : url,
    body: body,
-   method: req.body.type,
-   jar: false
+   qs: query,
+   method: req.body.options.type,
+   jar: false,
+   json: json
   },
   function(err, r, body){
+    var b = body;
    if(err){
     console.log('error:', err);
-   } else {
-    console.log('statusCode:', r.statusCode);
-    console.log('body:', body);
-    console.log('headers:', r.headers);
-    console.log("*********************END*******************");
+    b = 'error:' + err + " body: " + body;
+   }
+   var statusCode = 500;
+   var headers = "";
+   if(r) {
+    statusCode = r.statusCode;
+    headers =  r.headers;
    }
    res.write(JSON.stringify({
     error: err,
-    statusCode: r.statusCode,
-    body: body,
-    headers: r.headers
+    statusCode: statusCode,
+    body: b,
+    headers: headers
    }));
    res.end();
   }

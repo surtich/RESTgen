@@ -22,7 +22,8 @@
 		"COPY": "copy"
 	},
 	"CHOOSE": "Choose an API",
-	"TRY": "Try it!",
+	"TRY_SERVER": "Try it from Server!",
+	"TRY_CLIENT": "Try it from Client!",
 	"CLEAR_RESULTS": "clear results",
 	"RESPONSE_CODE": "Response Code",
 	"RESPONSE_HEADERS": "Response Headers",

@@ -65,7 +65,8 @@ iris.path = {
 		}
 	},
 	resource: {
-		app: 'app/resource/app.js'
+		app: 'app/resource/app.js',
+		try: 'app/resource/try.js'
 	}
 };
 

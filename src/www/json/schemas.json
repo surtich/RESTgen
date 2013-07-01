@@ -3,7 +3,10 @@
  "api": {
   "name": {
    "key": true,
-   "show": false
+   "show": false,
+   "filter": false,
+   "expand": false,
+   "details": false
   },
   "version": {
     "type": "list",
@@ -72,6 +75,12 @@
   "path" : {
     "inline": true
   },
+  "type": {
+    "inline" : true,
+    "view": "select",
+    "values": "text, json",
+    "default": "text"
+    },
   "description": {
     "show_title": false,
     "inline" : true,

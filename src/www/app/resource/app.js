@@ -89,46 +89,6 @@ iris.resource(
    });
   }
 
-  self.try = function(method, p_cbk) {
-    var endpoint = method.parent;
-    var version = endpoint.parent;
-    var api = version.parent;
-    var options = {
-      type: method.method,
-      url: version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + method.path,
-      body: {},
-      header: {},
-      path: {}
-    };
-
-
-    for (var i = 0; i < method.param.length; i++) {
-      var param = method.param[i];
-      options[param.location][param.name] = param.value;
-    }
-    
-    var settings = {
-      type: "POST",
-      url: "/processReq",
-      data: options,
-      dataType: "json"
-    };
-
-    console.log("settings",settings)
-
-    $.ajax(settings).done(function(data, textStatus, jqXHR) {
-      if (p_cbk) {
-        p_cbk(data);
-      }
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-      console.log("error");
-      if (p_cbk) {
-        p_cbk({statusCode: "error " + textStatus});
-      }
-    });
-
-  }
-
   function getJSON(file, f_ok) {
    self.get(file, function(data) {
     loaded = true;
