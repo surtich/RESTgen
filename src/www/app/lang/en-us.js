@@ -21,6 +21,7 @@
 		"NEW": "new",
 		"COPY": "copy"
 	},
+	"CODE": "Code",
 	"CHOOSE": "Choose an API",
 	"TRY_SERVER": "Try it from Server!",
 	"TRY_CLIENT": "Try it from Client!",

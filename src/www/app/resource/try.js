@@ -36,6 +36,7 @@ iris.resource(
       if (p_cbk) {
         p_cbk(data);
       }
+      iris.notify(iris.evts.try, method);
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log("error");
       if (p_cbk) {
@@ -78,6 +79,7 @@ iris.resource(
       if (p_cbk) {
         p_cbk({"statusCode": jqXHR.status, "body": data, "headers": jqXHR.getAllResponseHeaders()});
       }
+      iris.notify(iris.evts.try, method);
     }).fail(function(jqXHR, textStatus, errorThrown) {
       console.log("error");
       if (p_cbk) {

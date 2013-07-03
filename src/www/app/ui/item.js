@@ -60,13 +60,16 @@ iris.ui(function(self) {
           self.details = false;
         }
         if (schema[fieldName].more) {
-          var tokens = schema[fieldName].more.split(".");
-          var presenter = iris.path;
-          for (var i = 0; i < tokens.length; i++) {
-            var token = tokens[i];
-            presenter = presenter[token];
+          var uis = schema[fieldName].more.split(",");
+          for (var i = 0; i < uis.length; i++) {
+            var tokens = uis[i].split(".");
+            var presenter = iris.path;
+            for (var j = 0; j < tokens.length; j++) {
+              var token = tokens[j];
+              presenter = presenter[token];
+            }
+            self.ui("more", presenter, {item: item}, self.APPEND);
           }
-          self.ui("more", presenter, {item: item}, self.APPEND);
         }
         changeLink(); 
       }

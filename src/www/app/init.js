@@ -62,17 +62,23 @@ iris.path = {
 		"try": {
 			js: 'app/ui/try.js',
 			html: 'app/ui/try.html'
+		},
+		"code": {
+			js: 'app/ui/code.js',
+			html: 'app/ui/code.html'
 		}
 	},
 	resource: {
 		app: 'app/resource/app.js',
-		try: 'app/resource/try.js'
+		try: 'app/resource/try.js',
+		code: 'app/resource/code.js'
 	}
 };
 
 
 iris.evts = {
-	changeState: 'CHANGE_STATE'
+	changeState: 'CHANGE_STATE',
+	try: "TRY"
 };
 
 $(document).ready(
@@ -99,3 +105,4 @@ $(document).ready(
 		iris.welcome(iris.path.welcome.js);
 	}
 );
+

@@ -62,7 +62,7 @@
    "unfilter": true,
    "expand": false,
    "link": false,
-   "more": "ui.try.js"
+   "more": "ui.try.js,ui.code.js"
   },
   "method" : {
     "inline": true,
