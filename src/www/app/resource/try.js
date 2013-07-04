@@ -9,7 +9,7 @@ iris.resource(
     var json = method.type == "json";
     var options = {
       type: method.method,
-      url: version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + method.path,
+      url: version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + endpoint.path + method.path,
       json: json,
       body: {},
       header: {},
@@ -20,7 +20,9 @@ iris.resource(
 
     for (var i = 0; i < method.param.length; i++) {
       var param = method.param[i];
-      options[param.location][param.name] = param.value;
+      if (param.value !== "") {
+        options[param.location][param.name] = param.value;
+      }
     }
     
     var settings = {
@@ -53,7 +55,7 @@ iris.resource(
     var json = method.type == "json";
     var options = {
       type: method.method,
-      url: version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + method.path,
+      url: version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + endpoint.path + method.path,
       proccessData: true,
       data: {},
       headers: {}
@@ -61,17 +63,19 @@ iris.resource(
 
     for (var i = 0; i < method.param.length; i++) {
       var param = method.param[i];
-      if (param.location == "body" && json) {
-        options.data[param.name] = JSON.parse(param.value);  
-      } else if (param.location == "body" || param.location == "query") {
-        options.data[param.name] = param.value;  
-      }  else if (param.location == "path") {
-        var regx = new RegExp('(:' + param.name + ")($|/)");
-        options.url = options.url.replace(regx, function(match, p1, p2, offset, string) {
-          return param.value + p2;
-        });
-      } else if (param.location == "header") {
-        options.headers[param.name] = param.value;  
+      if (param.value !== "") {
+        if (param.location == "body" && json) {
+          options.data[param.name] = JSON.parse(param.value);  
+        } else if (param.location == "body" || param.location == "query") {
+          options.data[param.name] = param.value;  
+        }  else if (param.location == "path") {
+          var regx = new RegExp('(:' + param.name + ")($|/)");
+          options.url = options.url.replace(regx, function(match, p1, p2, offset, string) {
+            return param.value + p2;
+          });
+        } else if (param.location == "header") {
+          options.headers[param.name] = param.value;  
+        }
       }
     }
     
@@ -88,9 +92,6 @@ iris.resource(
     });
 
   }
-
-  
-
 		
  },
  iris.path.resource.try);

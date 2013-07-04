@@ -35,8 +35,7 @@ iris.ui(function(self) {
 		);
 
 		function processresults(data) {
-			console.log(data)
-			var body = data.body;
+			var body = data.body;	
 			var headers = data.headers;
 			if (typeof body !== "string") {
 
@@ -47,9 +46,9 @@ iris.ui(function(self) {
 				headers = JSON.stringify(headers);
 			}
 			self.get("clear-results").show();
-			self.get("response-code").html(data.statusCode);
-			self.get("response-body").html(body);
-			self.get("response-headers").html(headers);
+			self.get("response-code").text(data.statusCode);
+			self.get("response-body").text(body);
+			self.get("response-headers").text(headers);
 			self.get("result").show();
 		}
 	}

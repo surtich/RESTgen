@@ -8,7 +8,7 @@ iris.resource(
     var version = endpoint.parent;
     var api = version.parent;
     var json = method.type == "json";
-    var url =  version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + method.path;
+    var url =  version.protocol + "://" + version.host + ":" + (version.port || 80) + version.path + endpoint.path + method.path;
     var strHeaders = '';
     var requestBody = '';
     var queryString = '';
@@ -21,28 +21,30 @@ iris.resource(
     if (method.param) {
       for (var i = 0; i < method.param.length; i++) {
         var param = method.param[i];
-        if (param.location == "path") {
-          var regx = new RegExp('(:' + param.name + ")($|/)");
-          url = url.replace(regx, function(match, p1, p2, offset, string) {
-            return param.value + p2;
-          });
-        } else if (param.location == "header") {
-          strHeaders += ' -H "' + param.name + ':' + param.value + '"';
-        } else if (param.location == "body") {
-          if (!json) {
-            if (requestBody) {
-            requestBody += "&";
+        if (param.value !== "") {
+          if (param.location == "path") {
+            var regx = new RegExp('(:' + param.name + ")($|/)");
+            url = url.replace(regx, function(match, p1, p2, offset, string) {
+              return param.value + p2;
+            });
+          } else if (param.location == "header") {
+            strHeaders += ' -H "' + param.name + ':' + param.value + '"';
+          } else if (param.location == "body") {
+            if (!json) {
+              if (requestBody) {
+              requestBody += "&";
+              }
+              requestBody += param.name + "=" + param.value;  
+            } else {
+              requestBody[param.name] = JSON.parse(param.value);  
             }
-            requestBody += param.name + "=" + param.value;  
-          } else {
-            requestBody[param.name] = JSON.parse(param.value);  
+            
+          } else if (param.location == "query") {
+            if (queryString) {
+              queryString += "&";
+            }
+            queryString += param.name + "=" + param.value;
           }
-          
-        } else if (param.location == "query") {
-          if (queryString) {
-            queryString += "&";
-          }
-          queryString += param.name + "=" + param.value;
         }
       }
       

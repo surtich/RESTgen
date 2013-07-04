@@ -50,6 +50,10 @@
    "key": true,
    "show": false
   },
+  "path": {},
+  "description": {
+    "view": "textarea"
+    },
   "method": {
     "type": "list",
     "schema": "method"

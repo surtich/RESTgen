@@ -1,4 +1,236 @@
 [{
+    "name": "Justin.tv",
+    "version": [{
+        "name": "0.0.1",
+        "host": "api.justin.tv",
+        "endpoint": [{
+            "name": "stream",
+            "method": [{
+                "name": "List",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "type",
+                    "location": "path",
+                    "value": "list.json",
+                    "description": "can be: list.json or list.xml"
+                }, {
+                    "name": "channel",
+                    "location": "query",
+                    "value": "",
+                    "description": "channel, which will limit to those streams"
+                }, {
+                    "name": "title",
+                    "location": "query",
+                    "value": "",
+                    "description": "title, which will limit to streams with the given title"
+                }, {
+                    "name": "category",
+                    "location": "query",
+                    "value": "social",
+                    "description": "category (Justin.tv Categories), which would be the same as the name appearing in the URL of its corresponding directory page on justin.tv (http://www.justin.tv/directory/science_tech, http://www.justin.tv/directory/featured, etc.)"
+                }, {
+                    "name": "limit",
+                    "location": "query",
+                    "value": "1",
+                    "description": "limit, which will cap the number of results returned, speeding up the request, max is 100, default is 50"
+                }, {
+                    "name": "offset",
+                    "location": "query",
+                    "value": "",
+                    "description": "offset, which will make the call return results starting at a particular offset, default is 0"
+                }, {
+                    "name": "language",
+                    "location": "query",
+                    "value": "",
+                    "description": "language, which will select only channels in that language. Language is specified as the language code: nl, fr, zh-cn, etc."
+                }],
+                "path": "/:type",
+                "description": "Returns stream information for all live channels. The results are sorted by the current number of viewers, with the most popular channels first."
+            }, {
+                "name": "Summary",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "type",
+                    "location": "path",
+                    "value": "summary.xml",
+                    "description": "can be: summary.json or summary.xml"
+                }, {
+                    "name": "channel",
+                    "location": "query",
+                    "value": "",
+                    "description": "channel, which will limit to those streams"
+                }, {
+                    "name": "category",
+                    "location": "query",
+                    "value": "",
+                    "description": "category (Justin.tv Categories), which would be the same as the name appearing in the URL of its corresponding directory page on justin.tv (http://www.justin.tv/directory/science_tech, http://www.justin.tv/directory/featured, etc.)"
+                }, {
+                    "name": "language",
+                    "location": "query",
+                    "value": "es",
+                    "description": "language, which will select only channels in that language. Language is specified as the language code: nl, fr, zh-cn, etc."
+                }],
+                "path": "/:type",
+                "description": "Returns aggregate stream information for all live channels (possibly scoped by category)."
+            }, {
+                "name": "Search",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "type",
+                    "location": "path",
+                    "value": "list.json",
+                    "description": "Ej: officecam.json, homecam.xmlon"
+                }, {
+                    "name": "channel",
+                    "location": "query",
+                    "value": "",
+                    "description": "channel, which will limit to those streams"
+                }, {
+                    "name": "title",
+                    "location": "query",
+                    "value": "",
+                    "description": "title, which will limit to streams with the given title"
+                }, {
+                    "name": "category",
+                    "location": "query",
+                    "value": "",
+                    "description": "category (Justin.tv Categories), which would be the same as the name appearing in the URL of its corresponding directory page on justin.tv (http://www.justin.tv/directory/science_tech, http://www.justin.tv/directory/featured, etc.)"
+                }, {
+                    "name": "limit",
+                    "location": "query",
+                    "value": "1",
+                    "description": "limit, which will cap the number of results returned, speeding up the request, max is 100, default is 50"
+                }, {
+                    "name": "offset",
+                    "location": "query",
+                    "value": "",
+                    "description": "offset, which will make the call return results starting at a particular offset, default is 0"
+                }, {
+                    "name": "language",
+                    "location": "query",
+                    "value": "",
+                    "description": "language, which will select only channels in that language. Language is specified as the language code: nl, fr, zh-cn, etc."
+                }],
+                "path": "/:type",
+                "description": "Returns stream information for the live channels that match a search query. The results are sorted by the current number of viewers, with the most popular channels first."
+            }],
+            "path": "/stream",
+            "description": "Stream Methods"
+        }, {
+            "name": "user",
+            "method": [{
+                "name": "Show",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "user.format",
+                    "location": "path",
+                    "value": "justin.json",
+                    "description": "Ej: justin.xml"
+                }],
+                "path": "/show/:user.format",
+                "description": "Returns extended information for a user, specified by user id or login."
+            }, {
+                "name": "Favorites",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "user.format",
+                    "location": "path",
+                    "value": "justin.json",
+                    "description": "Ej: justin.xml"
+                }, {
+                    "name": "limit",
+                    "location": "query",
+                    "value": "10",
+                    "description": "limit, which will cap the number of results returned, speeding up the request, max is 100, default is 50"
+                }, {
+                    "name": "offset",
+                    "location": "query",
+                    "value": "",
+                    "description": "offset, which will make the call return results starting at a particular offset, default is 0"
+                }, {
+                    "name": "live",
+                    "location": "query",
+                    "value": "truewww",
+                    "description": "when set to true, will restrict results to live channels."
+                }],
+                "path": "/favorites/:user.format",
+                "description": "Get all channels who are favorites of a user."
+            }],
+            "path": "/user",
+            "description": "User methods"
+        }, {
+            "name": "channel",
+            "method": [{
+                "name": "Show",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "login.format",
+                    "location": "path",
+                    "value": "apidemo.json",
+                    "description": "Ej: apidemo.json"
+                }],
+                "path": "/show/:login.format",
+                "description": "Returns extended information for a channel, specified by channel id or login. Requires OAuth authentication for private channels."
+            }, {
+                "name": "Fan",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "login.format",
+                    "location": "path",
+                    "value": "justin.json",
+                    "description": "Ej: justin.json"
+                }, {
+                    "name": "limit",
+                    "location": "query",
+                    "value": "1",
+                    "description": "limit, which will cap the number of results returned, speeding up the request, max is 100, default is 50"
+                }, {
+                    "name": "offset",
+                    "location": "query",
+                    "value": "",
+                    "description": "offset, which will make the call return results starting at a particular offset, default is 0"
+                }],
+                "path": "/fans/:login.format",
+                "description": "Get users who are fans of a channel. Requires OAuth authentication for private channels."
+            }, {
+                "name": "Archives",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "login.format",
+                    "location": "path",
+                    "value": "justin.json",
+                    "description": "Ej: justin.json"
+                }, {
+                    "name": "limit",
+                    "location": "query",
+                    "value": "2",
+                    "description": "limit, which will cap the number of results returned, speeding up the request, max is 100, default is 50"
+                }, {
+                    "name": "offset",
+                    "location": "query",
+                    "value": "",
+                    "description": "offset, which will make the call return results starting at a particular offset, default is 0"
+                }],
+                "path": "/archives/:login.format",
+                "description": "Get archives from a given channel. Requires OAuth authentication for private channels."
+            }],
+            "path": "/channel",
+            "description": "Channel objects include embed code, status, title, etc."
+        }],
+        "description": "Justin.tv API",
+        "protocol": "http",
+        "port": "80",
+        "path": "/api"
+    }]
+}, {
     "name": "qlog",
     "version": [{
         "name": "0.0.1",
