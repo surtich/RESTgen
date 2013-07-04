@@ -17,7 +17,7 @@ iris.ui(function(self) {
 			if (code[$(this).data("id")]) {
 				self.get("generated-code").html(code[$(this).data("id")](method));	
 			} else {
-				self.get("generated-code").html($(this).data("id"));	
+				self.get("generated-code").html($(this).data("id").toUpperCase() + " code generation not implemented yet.");	
 			}
 
 		});

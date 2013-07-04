@@ -78,7 +78,8 @@ iris.path = {
 
 iris.evts = {
 	changeState: 'CHANGE_STATE',
-	try: "TRY"
+	try: "TRY",
+	copy: "COPY"
 };
 
 $(document).ready(

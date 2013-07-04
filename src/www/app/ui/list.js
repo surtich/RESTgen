@@ -1,8 +1,9 @@
 iris.ui(function(self) {
 	var list = null;
 	var items = [];
+	var app = iris.resource(iris.path.resource.app);
 
-	self.settings({"view": null, schema: null});
+	self.settings({"view": null, "schema": null});
 
 	self.create = function() {
 
@@ -26,8 +27,8 @@ iris.ui(function(self) {
 			self.ui('actions', iris.path.ui.list_actions.js, {'add': newItem, 'list': list});	
 			createUIs();
 		}
-	
-		
+
+		self.add = newItem;
 		
 	}
 
@@ -72,18 +73,24 @@ iris.ui(function(self) {
 	}
 
 	function newItem(clon) {
-		var item = $.extend({}, clon);
+		var item = app.clone(clon) || {};
 		for (var fieldName in list.schema) {
 			if (list.schema[fieldName].key) {
-				item[fieldName] = clon ? clon[fieldName] + "_" + iris.translate("STATES.COPY") : iris.translate("STATES.NEW") + "_" + (list.type || list.name);	
-			} else {
-				item[fieldName] = (clon ? clon[fieldName] : "");	
+				item[fieldName] = ( clon ? clon[fieldName] + "_" + iris.translate("STATES.COPY") : iris.translate("STATES.NEW") + "_" + (list.type || list.name) );	
 			}
 
-			if (!clon && list.schema[fieldName].default) {
-				item[fieldName] = list.schema[fieldName].default;
+			if (!clon) {
+				if (list.schema[fieldName].default) {
+					item[fieldName] = list.schema[fieldName].default;
+				}
+
+				if (list.schema[fieldName].type == "list") {
+					item[fieldName] = [];
+				}
 			}
 		}
+
+		item.parent = list.itemParent;
 
 		list.items.push(item);
 		
@@ -91,6 +98,7 @@ iris.ui(function(self) {
 		updateSize();
 		render();
 	}
+
 
 	function del(pos) {
 		list.items.splice(pos, 1);

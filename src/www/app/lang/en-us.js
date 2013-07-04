@@ -8,6 +8,8 @@
 		"DELETE": "Delete",
 		"ADD": "New",
 		"COPY": "Copy",
+		"PASTE": "Paste",
+		"DUPLICATE": "Duplicate",
 		"MOVE_UP": "Move up",
 		"MOVE_DOWN": "Move down",
 		"HOME": "Home",

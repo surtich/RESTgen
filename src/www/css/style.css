@@ -256,8 +256,18 @@ label {
   
 }
 
+.duplicate {
+   background-image: url('/img/duplicate.png');
+  
+}
+
 .copy {
    background-image: url('/img/copy.png');
+  
+}
+
+.paste {
+   background-image: url('/img/paste.png');
   
 }
 

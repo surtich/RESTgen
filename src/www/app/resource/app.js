@@ -9,6 +9,21 @@ iris.resource(
   
   
   self.order = order;
+
+  var clip = {};
+
+  self.copy = function(item, schema) {
+    clip = {
+      item: clone(item),
+      schema: schema
+    } 
+
+    iris.notify(iris.evts.copy);
+  }
+
+  self.getClip = function() {
+    return clip;
+  }
   
 
   self.init = function(f_ok) {
@@ -53,6 +68,8 @@ iris.resource(
     alert(data);
    })	;
   }
+
+  self.clone = clone;
 
 		
   self.isEditable = function() {
@@ -132,7 +149,7 @@ iris.resource(
   }
 
 
-  function clone(item) {
+  function clone(item, removeParents) {
     if (!item) { return item; } // null, undefined values check
 
     var types = [ Number, String, Boolean ], 
@@ -149,8 +166,9 @@ iris.resource(
         if (Object.prototype.toString.call( item ) === "[object Array]") {
             result = [];
             item.forEach(function(child, index, array) { 
-                result[index] = clone( child );
+                result[index] = clone( child, removeParents );
             });
+
         } else if (typeof item == "object") {
             // testing that this is DOM
             if (item.nodeType && typeof item.cloneNode == "function") {
@@ -162,10 +180,12 @@ iris.resource(
                     // it is an object literal
                     result = {};
                     for (var i in item) {
-                        if (i === "parent" && typeof item[i] == "object") { 
-                          //delete item[i];
+                        if (i === "parent") {
+                          if (removeParents === false) {
+                            result[i] = item[i];  
+                          }
                         } else {
-                          result[i] = clone( item[i] );
+                          result[i] = clone( item[i], removeParents );
                         }
                         
                     }

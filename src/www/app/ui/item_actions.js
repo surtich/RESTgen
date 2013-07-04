@@ -2,6 +2,7 @@ iris.ui(function(self) {
 
 	var editable = false;
 	var showDetails = false;
+	var showPaste = false;
 	var expandAll = false;
 	var ui = null;
  	var filter = "";
@@ -66,7 +67,7 @@ iris.ui(function(self) {
 			ui.save();
 		});
 
- 
+
 		self.get('btnCancel').click(function() {
 			editable = false;
 			ui.cancel();
@@ -76,8 +77,18 @@ iris.ui(function(self) {
 			ui.del();
 		});
 
-		self.get('btnCopy').click(function() {
+		self.get('btnDuplicate').click(function() {
 			ui.copy();
+		});
+
+		self.get('btnPaste').click(function() {
+			ui.paste();
+		});
+
+
+
+		self.get('btnCopy').click(function() {
+			app.copy(ui.item, ui.schema);
 		});
 
 		self.get('btnUp').click(function() {
@@ -88,44 +99,49 @@ iris.ui(function(self) {
 			ui.move(ui.setting("pos") , ui.setting("pos") + 1);
 		});
   
-  self.get('btnFilter').click(function() {
-   var txtFilter = self.get("txtFilter");
-   if (txtFilter.val().trim() == "") {
-    txtFilter.toggle();
-   } else {
-    if (txtFilter.val() !== filter) {
-     self.get('btnExpandAll').trigger('click');
-     filter = txtFilter.val();
-    } else {
-     txtFilter.val("").hide();
-     filter ="";
-    }
-    ui.filter(filter, true);
-    if (ui.canFilter === false) {
- 		self.get("filter").hide();
-    }
-    
-   }
+		  self.get('btnFilter').click(function() {
+		   var txtFilter = self.get("txtFilter");
+		   if (txtFilter.val().trim() == "") {
+		    txtFilter.toggle();
+		   } else {
+		    if (txtFilter.val() !== filter) {
+		     self.get('btnExpandAll').trigger('click');
+		     filter = txtFilter.val();
+		    } else {
+		     txtFilter.val("").hide();
+		     filter ="";
+		    }
+		    ui.filter(filter, true);
+		    if (ui.canFilter === false) {
+		 		self.get("filter").hide();
+		    }
+		    
+		   }
 		});
 
- 	self.filter = function(f) {
- 		filter = f;
- 		self.get("txtFilter").val(filter).toggle(filter != "");
- 		if (ui.canFilter === false && ui.unFilter === true) {
- 			self.get("txtFilter").hide();
- 			self.get("filter").toggle(filter != "");
- 		}
- 	}
+	 	self.filter = function(f) {
+	 		filter = f;
+	 		self.get("txtFilter").val(filter).toggle(filter != "");
+	 		if (ui.canFilter === false && ui.unFilter === true) {
+	 			self.get("txtFilter").hide();
+	 			self.get("filter").toggle(filter != "");
+	 		}
+	 	}
 
 
-		render();
+			render();
 
-		self.render = render;
+			self.render = render;
 	};
 
 	self.showDetails = function(visible) {
 		showDetails = visible;
 		render();
+	}
+
+	self.showPaste = function(visible) {
+		showPaste = visible;
+		render();	
 	}
 
 	
@@ -135,6 +151,8 @@ iris.ui(function(self) {
 		self.get('lblEdit').toggle(app.isEditable() && !editable);
 		self.get('lblDelete').toggle(app.isEditable() && !editable);
 		self.get('lblCopy').toggle(app.isEditable() && !editable);
+		self.get('lblPaste').toggle(app.isEditable() && !editable && showPaste);
+		self.get('lblDuplicate').toggle(app.isEditable() && !editable);
 		self.get('lblUp').toggle(app.isEditable() && !editable && ui.setting("pos") != 0);
 		self.get('lblDown').toggle(app.isEditable() && !editable && ui.setting("pos") < ui.setting("size") - 1);
 		self.get('lblDetails').toggleClass("open", !showDetails);

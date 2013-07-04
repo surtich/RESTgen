@@ -15,6 +15,10 @@ iris.ui(function(self) {
 		item = self.setting('item');
 		schema = field.schema;
 		editable = schema.autoedit;
+
+		self.item = item;
+		self.schema = schema;
+		
 		self.tmplMode(self.APPEND);
 		if (self.setting("table")) {
       		self.tmpl(iris.path.ui.field_cell.html);

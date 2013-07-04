@@ -136,6 +136,22 @@ iris.ui(function(self) {
           if (!item[fieldName]) {
             item[fieldName] = [];
           }
+
+          self.on(iris.evts.copy, function() {
+            if (listSchema == app.getClip().schema) {
+              actions.showPaste(true);
+            } else {
+              actions.showPaste(false);
+            }
+          });
+
+          if (listSchema == app.getClip().schema) {
+              actions.showPaste(true);
+            } else {
+              actions.showPaste(false);
+            }
+
+
           lists.push(self.ui(container, iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "itemParent": item, "items": item[fieldName], "schema": listSchema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName, view: schema[fieldName].view}));
         });
       }
@@ -145,6 +161,7 @@ iris.ui(function(self) {
   
   
   self.item = item;
+  self.schema = schema;
   self.showValues = showValues;
   self.toggleAll = toggleAll;
   self.filter = filter;
@@ -153,6 +170,7 @@ iris.ui(function(self) {
   self.cancel = cancel;
   self.del = del;
   self.copy = copy;
+  self.paste = paste;
   self.move = move;
   self.render = render;
   self.actions = actions;
@@ -266,6 +284,18 @@ iris.ui(function(self) {
 
  function copy() {
   self.setting('add')(item);
+ }
+
+ function paste() {
+  for (var i = 0; i < lists.length; i++) {
+   var list = lists[i];
+   if (list.setting("list").schema == app.getClip().schema ) {
+    list.add(app.getClip().item);
+   }
+    
+  }
+
+  
  }
 
  function render() {
