@@ -10,6 +10,18 @@ iris.screen(function(self) {
 			]
 			);
 		self.on(iris.AFTER_NAVIGATION, updateBreadcrumb);
+
+
+		self.on(iris.evts.edit, function() {
+			self.get("breadcrumb").find("a").bind("click", function(e) {
+				e.preventDefault();
+			});
+		});
+
+		self.on(iris.evts.endEdit, function() {
+			self.get("breadcrumb").find("a").unbind("click");
+		});
+
 		
 		
 	}

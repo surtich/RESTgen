@@ -12,6 +12,7 @@ iris.ui(function(self) {
  var lists = [];
  var view = null;
  var listItemsLoaded = false;
+ var listSchema = null;
  
  self.settings({"view": null, "header": null, "item": null, "itemParent": null});
 
@@ -23,6 +24,18 @@ iris.ui(function(self) {
 
   self.tmplMode(self.APPEND);
 
+
+    self.on(iris.evts.edit, function() {
+      self.get("name").bind("click", function(e) {
+        e.preventDefault();
+      });
+    });
+
+    self.on(iris.evts.endEdit, function() {
+      self.get("name").unbind("click");
+    });
+
+
   if (view === "table") {
     self.tmpl(iris.path.ui.item_row.html);
     showDetails = true;
@@ -33,10 +46,11 @@ iris.ui(function(self) {
 
   }
 
-
   self.get().addClass("item");
 
-
+  actions = self.ui('actions', iris.path.ui.item_actions.js, {
+     'ui': self
+    }, self.APPEND);
 
   
   for (var fieldName in schema) {
@@ -58,6 +72,12 @@ iris.ui(function(self) {
         }
         if (schema[fieldName].details === false) {
           self.details = false;
+        }
+        if (schema[fieldName].canCopy === false) {
+          self.canCopy = false;
+        }
+        if (schema[fieldName].showPastedItems === false) {
+          self.showPastedItems = false;
         }
         if (schema[fieldName].more) {
           var uis = schema[fieldName].more.split(",");
@@ -86,6 +106,7 @@ iris.ui(function(self) {
         }  
       }
 
+
       if (schema[fieldName].type !== "list") {
         fields.push(self.ui(container, iris.path.ui.field.js, {
           field: {
@@ -98,14 +119,35 @@ iris.ui(function(self) {
           "table": view == "table"
          }));
 
+      } else {
+        var nameSchema = schema[fieldName].schema;
+        app.getSchemas(function(schemas) {
+          var listSchema = schemas[nameSchema];
+          if (app.getClip().schema && listSchema == app.getClip().schema) {
+           actions.showPaste(true);
+          } else {
+            actions.showPaste(false);
+          }
+          
+        });
+
+        self.on(iris.evts.copy, function() {
+          app.getSchemas(function(schemas) {
+            listSchema = schemas[nameSchema];
+            if (app.getClip().schema && listSchema == app.getClip().schema) {
+              actions.showPaste(true);
+            } else {
+              actions.showPaste(false);
+            }
+          });
+            
+        });
+
       }
       
     }
 
-  actions = self.ui('actions', iris.path.ui.item_actions.js, {
-   'ui': self
-  }, self.APPEND);
-
+    actions.init();
 
   function createListItems() {
     if (listItemsLoaded) {
@@ -137,21 +179,6 @@ iris.ui(function(self) {
             item[fieldName] = [];
           }
 
-          self.on(iris.evts.copy, function() {
-            if (listSchema == app.getClip().schema) {
-              actions.showPaste(true);
-            } else {
-              actions.showPaste(false);
-            }
-          });
-
-          if (listSchema == app.getClip().schema) {
-              actions.showPaste(true);
-            } else {
-              actions.showPaste(false);
-            }
-
-
           lists.push(self.ui(container, iris.path.ui.list.js, {"list": {'type': nameSchema, "name": nameSchema, "itemParent": item, "items": item[fieldName], "schema": listSchema}, "link_schema":  self.setting('link_schema') +  "=" + item[key] + "&" + fieldName, view: schema[fieldName].view}));
         });
       }
@@ -181,6 +208,8 @@ iris.ui(function(self) {
     self.get("more").toggle(!app.isEditable());  
   });
 
+  self.get("more").toggle(!app.isEditable());  
+
   //render();
 
  }
@@ -204,12 +233,13 @@ iris.ui(function(self) {
   showValues(visible);
   for (var i = 0; i < lists.length; i++) {
     var list = lists[i];
-    for (var j = 0; j < list.items.length; j++) {
-      var item = list.items[j];
-      item.toggleAll(visible);
-      item.actions.showDetails(visible);
+    if (list.items) {
+      for (var j = 0; j < list.items.length; j++) {
+        var item = list.items[j];
+        item.toggleAll(visible);
+        item.actions.showDetails(visible);
+      }  
     }
-
   }
  }
 
@@ -247,7 +277,6 @@ iris.ui(function(self) {
 
  function setEditable(state) {
   editable = state;
-  
   render();
  }
 
@@ -287,15 +316,15 @@ iris.ui(function(self) {
  }
 
  function paste() {
+  if (!listItemsLoaded) {
+    self.createListItems();
+  }
   for (var i = 0; i < lists.length; i++) {
    var list = lists[i];
    if (list.setting("list").schema == app.getClip().schema ) {
-    list.add(app.getClip().item);
+    list.add(app.getClip().item, self.showPastedItems);
    }
-    
   }
-
-  
  }
 
  function render() {
@@ -325,8 +354,5 @@ iris.ui(function(self) {
     self.get("name").attr("href", "#/details?" + self.setting('link_schema') +  "=" + item[key]);
   }
  }
-
-  
-
 
 }, iris.path.ui.item.js);

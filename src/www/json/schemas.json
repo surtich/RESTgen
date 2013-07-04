@@ -6,7 +6,9 @@
    "show": false,
    "filter": false,
    "expand": false,
-   "details": false
+   "details": false,
+   "canCopy": false,
+   "showPastedItems": false
   },
   "version": {
     "type": "list",

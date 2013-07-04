@@ -29,7 +29,8 @@
                 "name": "Signout",
                 "method": "POST",
                 "path": "/signout",
-                "description": "Disconnects the user"
+                "description": "Disconnects the user",
+                "type": "text"
             }, {
                 "name": "Get users",
                 "method": "GET",

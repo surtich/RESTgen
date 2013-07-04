@@ -6,6 +6,7 @@ iris.ui(function(self) {
 	var expandAll = false;
 	var ui = null;
  	var filter = "";
+ 	var canCopy = true;
 
 	var app = iris.resource(iris.path.resource.app);
 
@@ -14,6 +15,10 @@ iris.ui(function(self) {
 		self.tmpl(iris.path.ui.item_actions.html);
 		self.get("btnDetails").hide();
   		self.get('txtFilter').hide();
+
+	};
+
+	self.init = function() {
 
   		if (ui.canFilter === false) {
   			self.get('filter').hide();
@@ -27,7 +32,10 @@ iris.ui(function(self) {
   		if (ui.details === false) {
   			self.get("lblDetails").hide();
   		}
-  
+
+  		if (ui.canCopy === false) {
+  			canCopy = false;
+  		}
 		self.on(iris.evts.changeState, function() {
 			if (!app.isEditable()) {
 				self.get('btnCancel').trigger('click');				
@@ -36,6 +44,17 @@ iris.ui(function(self) {
 			}
 			
 		});
+
+		self.on(iris.evts.edit, function() {
+			self.get().find("button, input").prop('disabled', true);
+		});
+
+		self.on(iris.evts.endEdit, function() {
+			self.get().find("button, input").prop('disabled', false);
+		});
+
+
+		self.canCopy = true;
 		
 		self.get('btnDetails').click(function() {
 			showDetails = !showDetails;
@@ -60,17 +79,22 @@ iris.ui(function(self) {
 			showDetails = true;
 			ui.showValues(showDetails);
 			ui.setEditable(editable);
+			self.notify(iris.evts.edit);
+			self.get("btnOK").prop('disabled', false);
+			self.get("btnCancel").prop('disabled', false);
 		});
 
 		self.get('btnOK').click(function() {
 			editable = false;
 			ui.save();
+			self.notify(iris.evts.endEdit);
 		});
 
 
 		self.get('btnCancel').click(function() {
 			editable = false;
 			ui.cancel();
+			self.notify(iris.evts.endEdit);
 		});
 
 		self.get('btnDelete').click(function() {
@@ -87,7 +111,7 @@ iris.ui(function(self) {
 
 
 
-		self.get('btnCopy').click(function() {
+-		self.get('btnCopy').click(function() {
 			app.copy(ui.item, ui.schema);
 		});
 
@@ -150,7 +174,7 @@ iris.ui(function(self) {
 		self.get('lblCancel').toggle(app.isEditable() && showDetails && editable);
 		self.get('lblEdit').toggle(app.isEditable() && !editable);
 		self.get('lblDelete').toggle(app.isEditable() && !editable);
-		self.get('lblCopy').toggle(app.isEditable() && !editable);
+		self.get('lblCopy').toggle(app.isEditable() && !editable && canCopy);
 		self.get('lblPaste').toggle(app.isEditable() && !editable && showPaste);
 		self.get('lblDuplicate').toggle(app.isEditable() && !editable);
 		self.get('lblUp').toggle(app.isEditable() && !editable && ui.setting("pos") != 0);

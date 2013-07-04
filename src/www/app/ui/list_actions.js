@@ -14,6 +14,15 @@ iris.ui(function(self) {
 			self.setting('add')();
 		});
 
+		self.on(iris.evts.edit, function() {
+			self.get().find("button, input").prop('disabled', true);
+		});
+
+		self.on(iris.evts.endEdit, function() {
+			self.get().find("button, input").prop('disabled', false);
+		});
+
+
 		render();
 	}
 

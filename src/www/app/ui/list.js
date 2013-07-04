@@ -72,7 +72,7 @@ iris.ui(function(self) {
 		return ui;
 	}
 
-	function newItem(clon) {
+	function newItem(clon, createUI) {
 		var item = app.clone(clon) || {};
 		for (var fieldName in list.schema) {
 			if (list.schema[fieldName].key) {
@@ -93,10 +93,11 @@ iris.ui(function(self) {
 		item.parent = list.itemParent;
 
 		list.items.push(item);
-		
-		add(item, list.schema, list.items.length - 1, list.items.length);
-		updateSize();
-		render();
+		if (createUI !== false) {
+			add(item, list.schema, list.items.length - 1, list.items.length);
+			updateSize();
+			render();	
+		}	
 	}
 
 
