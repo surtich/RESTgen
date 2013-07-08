@@ -15,9 +15,27 @@ iris.ui(function(self) {
 			self.get("code").find("li").removeClass("selected");
 			$(this).addClass("selected");
 			if (code[$(this).data("id")]) {
-				self.get("generated-code").html(code[$(this).data("id")](method));	
+				var html = code[$(this).data("id")](method);
+				self.get("generated-code").html(html);
+				if ($(html).find("[data-id=select]").size() > 0) {
+					var doc = document;
+				    var text = self.get("generated-code").find("[data-id=select]").get(0);    
+
+				    if (doc.body.createTextRange) { // ms
+				        var range = doc.body.createTextRange();
+				        range.moveToElementText(text);
+				        range.select();
+				    } else if (window.getSelection) { // moz, opera, webkit
+				        var selection = window.getSelection();            
+				        var range = doc.createRange();
+				        range.selectNodeContents(text);
+				        selection.removeAllRanges();
+				        selection.addRange(range);
+				    }
+
+				}
 			} else {
-				self.get("generated-code").html($(this).data("id").toUpperCase() + " code generation not implemented yet.");	
+				self.get("generated-code").html($(this).data("id").toUpperCase() + " code generation not implemented yet.");
 			}
 
 		});
