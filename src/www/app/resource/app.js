@@ -144,8 +144,7 @@ iris.resource(
           break;
         }
       }  
-    }
-    
+    }    
   }
 
 
