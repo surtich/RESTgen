@@ -50,6 +50,9 @@ iris.ui(function(self) {
 			self.get("response-body").text(body);
 			self.get("response-headers").text(headers);
 			self.get("result").show();
+			hljs.highlightBlock(self.get("response-code").get(0), null, false);			
+			hljs.highlightBlock(self.get("response-body").get(0), null, false);
+			hljs.highlightBlock(self.get("response-headers").get(0), null, false);;
 		}
 	}
 

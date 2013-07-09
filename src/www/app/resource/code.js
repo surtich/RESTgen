@@ -57,7 +57,7 @@ iris.resource(
     
     var curl =  'curl -v -L -X ' + method.method + strHeaders + (requestBody ? ' -d \'' + requestBody + '\' ' : ' ') + '\'' + url  + (queryString ? '?' + queryString : '') + '\'';
 
-    return "<p>" + curl + "</p>";
+    return "<pre class='headers prettyprint'>" + curl + "</pre>";
   }
 
   self.jquery = function(method) {
@@ -96,7 +96,7 @@ iris.resource(
     jquery += "\n\n$.ajax(options).done(function(data, textStatus, jqXHR) {\n\n}).fail(function(jqXHR, textStatus, errorThrown) {\n\n});";
 
     
-    return "<p>" + jquery + "</p>";
+    return "<pre class='headers prettyprint'>" + jquery + "</pre>";
 
 
   }
@@ -139,7 +139,7 @@ iris.resource(
         if (method.param) {
           for (var j = 0; j < method.param.length; j++) {
             var param = method.param[j];
-            if (param.value !== "" && param.location !== "header") {
+            if (param.location !== "header") {
               params.push("p_" + param.name);
               if (param.location == "body") {
                 if (method.method === "POST" || method.method === "PUT") {
@@ -195,7 +195,7 @@ iris.resource(
     iris += "\n\t},";
     iris += "\niris.path.resource." + endpoint.name.substr(0, 1).toLowerCase() + endpoint.name.substr(1) + ");";
 
-    return "<p>" + iris + "</p>";
+    return "<pre class='headers prettyprint'>" + iris + "</pre>";
   }
 		
  },

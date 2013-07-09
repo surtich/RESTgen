@@ -6,7 +6,7 @@ iris.ui(function(self) {
 		var method = self.setting("item");
 		self.tmpl(iris.path.ui.code.html);
 
-		self.get("result").append("<pre id='result_" + (++code.resultCount) + "' class='headers prettyprint' data-id='generated-code'></pre>");
+		self.get("result").append("<div id='result_" + (++code.resultCount) + "' data-id='generated-code'></div>");
 		self.get("result").prepend("<button data-id='copy-code' style='float:right; margin: 8px;' data-clipboard-target='result_" + code.resultCount + "'>Copy</button>");
 		
 		var clip = new ZeroClipboard(self.get("copy-code"));
@@ -17,6 +17,7 @@ iris.ui(function(self) {
 			if (code[$(this).data("id")]) {
 				var html = code[$(this).data("id")](method);
 				self.get("generated-code").html(html);
+				hljs.highlightBlock(self.get("generated-code").get(0), null, false);
 				if ($(html).find("[data-id=select]").size() > 0) {
 					var doc = document;
 				    var text = self.get("generated-code").find("[data-id=select]").get(0);    
@@ -42,9 +43,6 @@ iris.ui(function(self) {
 
 		
 
-		self.get("curl").trigger("click");
-
-
 
 
 		iris.on(iris.evts.changeState, function() {
@@ -58,6 +56,11 @@ iris.ui(function(self) {
 				self.get("code").find("li.selected").trigger("click");
     		} 
   		});
+
+
+		self.get("curl").trigger("click");
+
+
 
 
 	}
