@@ -252,73 +252,73 @@ label {
 }
 
 .delete {
-   background-image: url('/img/trash.png');
+   background-image: url('../img/trash.png');
   
 }
 
 .duplicate {
-   background-image: url('/img/duplicate.png');
+   background-image: url('../img/duplicate.png');
   
 }
 
 .copy {
-   background-image: url('/img/copy.png');
+   background-image: url('../img/copy.png');
   
 }
 
 .paste {
-   background-image: url('/img/paste.png');
+   background-image: url('../img/paste.png');
   
 }
 
 .move_up {
-   background-image: url('/img/up.png');
+   background-image: url('../img/up.png');
   
 }
 
 .move_down {
-   background-image: url('/img/down.png');
+   background-image: url('../img/down.png');
   
 }
 
 .edit {
-   background-image: url('/img/edit.png');
+   background-image: url('../img/edit.png');
   
 }
 
 
 .ok {
-   background-image: url('/img/ok.png');
+   background-image: url('../img/ok.png');
   
 }
 
 
 .cancel {
-   background-image: url('/img/cancel.png');
+   background-image: url('../img/cancel.png');
   
 }
 .open {
-   background-image: url('/img/plus.png');
+   background-image: url('../img/plus.png');
   
 }
 
 .expand {
-   background-image: url('/img/expand.png');
+   background-image: url('../img/expand.png');
   
 }
 
 .collapse {
-   background-image: url('/img/collapse.png');
+   background-image: url('../img/collapse.png');
   
 }
 
 .filter {
-   background-image: url('/img/filter.png');
+   background-image: url('../img/filter.png');
   
 }
 
 .close {
-  background-image: url('/img/minus.png');
+  background-image: url('../img/minus.png');
     }
 
 .list {

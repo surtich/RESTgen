@@ -118,13 +118,13 @@ iris.resource(
   }
 
   function getApis(f_ok) {
-   getJSON("/json/apiconfig.json", function(data) {
+   getJSON("json/apiconfig.json", function(data) {
     f_ok(data);
    });
   }
   
   function getSchemas(f_ok) {
-   getJSON("/json/schemas.json", function(data) {
+   getJSON("json/schemas.json", function(data) {
     f_ok(data);
    });
   }
