@@ -266,13 +266,48 @@ iris.resource(
     return "<pre class='headers'>" + node + "</pre>";
   }
 
-  function normalize(name) {
+  self.java = function(method) {
+    var endpoint = method.parent;
+    var version = endpoint.parent;
+    var app = version.parent;
+
+    var appName = normalize(app.name);
+    var endpointName = normalize(endpoint.name);
+    var methodName = normalize(method.name);
+
+
+    var java = "";
+
+    java += "package com." + appName + "." + endpointName + ".service;";
+
+    var imports = "\nimport java.util.logging.Logger;";
+    imports += "\n\nimport com.google.gson.Gson;";
+    imports += "\nimport javax.servlet.http.HttpServletRequest;";
+    imports += "\nimport javax.servlet.http.HttpServletResponse;";
+
+    imports += "\n\nimport javax.ws.rs.Path;";
+    imports += "\nimport javax.ws.rs.Produces;";
+    imports += "\nimport javax.ws.rs.core.Context;";
+    imports += "\nimport javax.ws.rs.core.Response;";
+
+    imports += "\n\nimport com." + appName + "." + endpointName + "." + normalize(endpointName, true) + "Dto;";
+    imports += "\nimport com." + appName + "." + endpointName + "." + normalize(endpointName, true) + "Manager;";
+
+
+    java += "\n" + imports;
+
+
+    return "<pre class='headers'>" + java + "</pre>";
+
+  }
+
+  function normalize(name, startsWithUpper) {
     var tokens = name.replace(/[.]/g, " ").split(" ");
     var newName = "";
 
     $.each(tokens, function(index, value) {
       newName += value.replace(/^([a-z])/i, function(match, p1, offset, string) {
-        if (index === 0) {
+        if (index === 0 && !startsWithUpper) {
           return p1.toLowerCase();
         } else {
           return p1.toUpperCase();

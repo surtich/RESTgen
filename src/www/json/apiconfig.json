@@ -472,7 +472,7 @@
         "description": "",
         "protocol": "http",
         "host": "localhost",
-        "port": "8080",
+        "port": "8081",
         "path": "",
         "endpoint": [{
             "name": "app",
@@ -514,5 +514,169 @@
             "path": "",
             "description": ""
         }]
+    }]
+}, {
+    "name": "Shopping",
+    "version": [{
+        "name": "0.0.1",
+        "host": "localhost",
+        "endpoint": [{
+            "name": "Category",
+            "method": [{
+                "name": "Find All",
+                "method": "GET",
+                "type": "text",
+                "path": "",
+                "description": ""
+            }],
+            "path": "/category",
+            "description": ""
+        }, {
+            "name": "Product",
+            "method": [{
+                "name": "Find All",
+                "method": "GET",
+                "type": "text",
+                "path": "",
+                "description": ""
+            }, {
+                "name": "Get Products",
+                "method": "GET",
+                "type": "text",
+                "path": "/:idCategory",
+                "description": "",
+                "param": [{
+                    "name": "idCategory",
+                    "location": "path",
+                    "value": "1",
+                    "description": ""
+                }]
+            }, {
+                "name": "Get Products",
+                "method": "POST",
+                "type": "text",
+                "path": "",
+                "description": "",
+                "param": [{
+                    "name": "productsList",
+                    "location": "body",
+                    "value": "[2,3]",
+                    "description": "Array of idProducts"
+                }]
+            }],
+            "path": "/product",
+            "description": ""
+        }, {
+            "name": "List",
+            "method": [{
+                "name": "Get Lists",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "dev_appserver_login=test@example.com:false:1858047642201391241",
+                    "description": "Cookie for GAE login"
+                }],
+                "path": "",
+                "description": ""
+            }, {
+                "name": "Get List",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "dev_appserver_login=test@example.com:false:1858047642201391241",
+                    "description": "Cookie for GAE login"
+                }, {
+                    "name": "idList",
+                    "location": "path",
+                    "value": "99",
+                    "description": ""
+                }],
+                "path": "/:idList",
+                "description": ""
+            }, {
+                "name": "Create",
+                "method": "POST",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "dev_appserver_login=test@example.com:false:1858047642201391241",
+                    "description": "Cookie for GAE login"
+                }, {
+                    "name": "products",
+                    "location": "body",
+                    "value": "[{\"idProduct\":4,\"purchased\":false,\"order\":1}, {\"idProduct\":2,\"purchased\":true,\"order\":2}]",
+                    "description": "Array of products"
+                }],
+                "path": "",
+                "description": ""
+            }, {
+                "name": "Update",
+                "method": "PUT",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "dev_appserver_login=test@example.com:false:1858047642201391241",
+                    "description": "Cookie for GAE login"
+                }, {
+                    "name": "idList",
+                    "location": "path",
+                    "value": "99",
+                    "description": ""
+                }, {
+                    "name": "products",
+                    "location": "body",
+                    "value": "[{\"idProduct\":8,\"purchased\":false,\"order\":1}, {\"idProduct\":2,\"purchased\":true,\"order\":2}, {\"idProduct\":6,\"purchased\":true,\"order\":3}]",
+                    "description": "Array of products"
+                }],
+                "path": "/:idList",
+                "description": ""
+            }, {
+                "name": "Delete List",
+                "method": "DELETE",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "dev_appserver_login=test@example.com:false:1858047642201391241",
+                    "description": "Cookie for GAE login"
+                }, {
+                    "name": "idList",
+                    "location": "path",
+                    "value": "75",
+                    "description": ""
+                }],
+                "path": "/:idList",
+                "description": ""
+            }, {
+                "name": "Get Products",
+                "method": "POST",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "dev_appserver_login=test@example.com:false:1858047642201391241",
+                    "description": "Cookie for GAE login"
+                }, {
+                    "name": "idProducts",
+                    "location": "body",
+                    "value": "[104,105]",
+                    "description": "Array of idProducts"
+                }],
+                "path": "/products",
+                "description": ""
+            }],
+            "path": "/list",
+            "description": ""
+        }],
+        "description": "",
+        "protocol": "http",
+        "port": "8080",
+        "path": "/s"
     }]
 }]
