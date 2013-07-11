@@ -118,6 +118,9 @@
     "default": "body",
     "values": "query, body, path, header"
     },
+  "javaType": {
+    "inline" : true
+  },
   "description": {
     "inline" : true
   }

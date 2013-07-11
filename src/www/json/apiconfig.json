@@ -303,7 +303,7 @@
                 }]
             }],
             "path": "",
-            "description": ""
+            "description": "User services"
         }, {
             "name": "App",
             "method": [{
@@ -380,7 +380,8 @@
                     "value": "51cde1862d93c86262000007",
                     "location": "path",
                     "description": "The _id key of the app"
-                }]
+                }],
+                "type": "text"
             }, {
                 "name": "Del App",
                 "method": "DELETE",
@@ -410,7 +411,7 @@
                 }]
             }],
             "path": "",
-            "description": ""
+            "description": "App services"
         }, {
             "name": "Log",
             "method": [{
@@ -462,7 +463,7 @@
                 }]
             }],
             "path": "",
-            "description": ""
+            "description": "Log services"
         }]
     }]
 }, {
@@ -576,7 +577,8 @@
                     "name": "Cookie",
                     "location": "header",
                     "value": "dev_appserver_login=test@example.com:false:1858047642201391241",
-                    "description": "Cookie for GAE login"
+                    "description": "Cookie for GAE login",
+                    "javaType": ""
                 }],
                 "path": "",
                 "description": ""
@@ -593,7 +595,8 @@
                     "name": "idList",
                     "location": "path",
                     "value": "99",
-                    "description": ""
+                    "description": "",
+                    "javaType": "Long"
                 }],
                 "path": "/:idList",
                 "description": ""
@@ -627,7 +630,8 @@
                     "name": "idList",
                     "location": "path",
                     "value": "99",
-                    "description": ""
+                    "description": "",
+                    "javaType": "Long"
                 }, {
                     "name": "products",
                     "location": "body",
@@ -649,7 +653,8 @@
                     "name": "idList",
                     "location": "path",
                     "value": "75",
-                    "description": ""
+                    "description": "",
+                    "javaType": "Long"
                 }],
                 "path": "/:idList",
                 "description": ""

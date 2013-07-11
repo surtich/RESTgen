@@ -30,6 +30,7 @@
 	"CLEAR_RESULTS": "clear results",
 	"RESPONSE_CODE": "Response Code",
 	"RESPONSE_HEADERS": "Response Headers",
-	"RESPONSE_BODY": "Response Body"
+	"RESPONSE_BODY": "Response Body",
+	"SEE_ALL": "See all"
 	
 }

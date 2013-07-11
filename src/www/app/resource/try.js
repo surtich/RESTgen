@@ -69,7 +69,7 @@ iris.resource(
         } else if (param.location == "body" || param.location == "query") {
           options.data[param.name] = param.value;  
         }  else if (param.location == "path") {
-          var regx = new RegExp('(:' + param.name + ")($|/)");
+          var regx = new RegExp('(:' + param.name + ")($|/)", "g");
           options.url = options.url.replace(regx, function(match, p1, p2, offset, string) {
             return param.value + p2;
           });
