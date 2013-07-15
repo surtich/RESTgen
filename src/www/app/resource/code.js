@@ -30,15 +30,19 @@ iris.resource(
           } else if (param.location == "header") {
             strHeaders += ' -H "' + param.name + ':' + param.value + '"';
           } else if (param.location == "body") {
+            var paramValues = param.isList !== "true" ? [param.value] : param.value.replace(/[\[\]]/g,"").split(",");
+            
             if (!json) {
-              if (requestBody) {
-              requestBody += "&";
+              for (var j = 0; j < paramValues.length; j++) {
+                var value = paramValues[j].trim();
+                if (requestBody) {
+                  requestBody += "&";
+                }
+                requestBody += param.name + "=" + value;
               }
-              requestBody += param.name + "=" + param.value;  
             } else {
               requestBody[param.name] = JSON.parse(param.value);  
             }
-            
           } else if (param.location == "query") {
             if (queryString) {
               queryString += "&";
@@ -297,7 +301,90 @@ iris.resource(
     return "<pre class='headers'>" + node + "</pre>";
   }
 
-  self.java = function(actualMethod) {
+  self.java = function(method, pre) {
+
+    if(!pre) {
+      pre = "";
+    }
+
+    var methodName = normalize(method.name);
+
+    var javadoc = "\n" + pre + "/**";
+
+    var javaImplementation = "";
+
+    if (method.description) {
+      javadoc += " " + method.description;
+    }
+
+    javadoc += "\n" + pre + " *";
+    
+
+    var java = "\n" + pre + "@" + method.method.toUpperCase();
+    
+    if (method.path) {
+      var regx = new RegExp(':([^:/]+)($|/)', 'g');
+      java += "\n" + pre + "@Path(\"" + method.path.replace(regx, function(match, p1, p2, offset, string) {
+          return "{" + p1 + "}" + p2;
+        }) + "\")";
+    }
+
+    java += "\n" + pre + "public Response " + methodName + "(";
+    var params = [];
+    if (method.param) {
+      for (var j = 0; j < method.param.length; j++) {
+        var param = method.param[j];
+        var annotation = "";
+        var type = param.javaType || "String";
+        if (param.location === "body" || param.location === "path") {
+          javadoc += "\n" + pre + " * @param " + param.name;
+          if (param.description) {
+            javadoc += "\t" + param.description;
+          }  
+        }
+        
+        switch (param.location) {
+          case "path":
+            annotation = "PathParam";     
+            break;
+          case "body":
+            annotation = "FormParam";
+            break;
+          case "query":
+          annotation = "QueryParam";
+            //javaImplementation += "\n" + pre + "\t" + type + " " + param.name + " = new " + type + "(p_request.getParameter(\"" + param.name + "\"));";  
+
+        }
+        if (annotation) {
+          params.push("@" + annotation + "(\"" + param.name + "\") " + (param.javaType ? param.javaType.replace(/[<]/, "&lt;").replace(/[>]/, "&gt;") : "String") + " p_" + param.name);
+
+        }
+        
+      }
+    }
+
+    params.push("@Context HttpServletRequest p_request");
+
+    javadoc += "\n" + pre + " */";
+    
+    java = javadoc + java + params.join(",").replace(/,/g, ", ") + ") {";
+    
+    if (javaImplementation) {
+      java += "\n" + javaImplementation;
+    }
+
+    java += "\n\n" + pre + "}";
+
+
+    if (pre) {
+      return java;
+    } else {
+      return "<pre class='headers'>" + java + "</pre>";  
+    }
+    
+  }
+
+  self.javaAll = function(actualMethod) {
     var endpoint = actualMethod.parent;
     var version = endpoint.parent;
     var app = version.parent;
@@ -326,9 +413,17 @@ iris.resource(
 
     
     var javaPre = "\n";
+    javaPre += "\n/** " + (endpoint.description ? endpoint.description : "");
+    javaPre += "\n *";
+    if (version.name) {
+      javaPre += "\n * @version " + version.name;  
+    }
+    javaPre += " \n */";
     if (endpoint.path) {
       javaPre += "\n@Path(\"" + endpoint.path + "\")";
     }
+
+
     javaPre += "\npublic class " + normalize(endpointName, true) + "Service {";
 
     javaPre += "\n\n\tprivate static final Logger LOGGER = Logger.getLogger(" + normalize(endpointName, true) + "Service.class.getName());";
@@ -340,50 +435,54 @@ iris.resource(
       for (var i = 0 ; i < endpoint.method.length; i++) {
 
         var method = endpoint.method[i];
-        var methodName = normalize(actualMethod.name);
+        
 
+        javaMethods += "\n";
 
         if (method === actualMethod) {
           javaMethods += "<span data-id='select'>";
         }
 
-        javaMethods += "\n\n\t@" + method.method.toUpperCase();
+        var methodName = normalize(method.name);
+
+        javaMethods += self.java(method, "\t");
         if (!importMethods[method.method.toUpperCase()]) {
           importMethods[method.method.toUpperCase()] = "\nimport javax.ws.rs." + method.method.toUpperCase() + ";";
         }
 
-        if (method.path) {
-          var regx = new RegExp(':([^:/]+)($|/)', 'g');
-          javaMethods += "\n\t@Path(\"" + method.path.replace(regx, function(match, p1, p2, offset, string) {
-              return "{" + p1 + "}" + p2;
-            }) + "\")";
-        }
-
-        javaMethods += "\n\tpublic Response " + methodName + "(";
-        var params = [];
+        
         if (method.param) {
           for (var j = 0; j < method.param.length; j++) {
             var param = method.param[j];
+            var annotation = "";
             switch (param.location) {
               case "path":
-                params.push("@PathParam(" + param.name + ") " + (param.javaType ? param.javaType : "String") + " p_" + param.name);
+                annotation = "PathParam";     
+                break;
+              case "body":
+                annotation = "FormParam";
                 break;
             }
+            if (annotation) {
+              if (!importMethods[annotation]) {
+                importMethods[annotation] = "\nimport javax.ws.rs." + annotation + ";";
+              }  
+            }
+            
           }
         }
 
-        javaMethods += params.join(",").replace(/,/g, ", ") + ") {";
-
-        javaMethods += "\n\n\t}"; 
         //iris += self.iris(method, "\t\t");
 
-        
         if (method === actualMethod) {
           javaMethods += "</span>";
         }
 
       }
     }
+
+    importMethods[" HttpServletRequest"] = "\nimport javax.servlet.http.HttpServletRequest;"
+
 
     java += "\n" + imports;
 

@@ -59,6 +59,10 @@ iris.path = {
 			js: 'app/ui/textarea_field.js',
 			html: 'app/ui/textarea_field.html'
 		},
+		checkbox_field: {
+			js: 'app/ui/checkbox_field.js',
+			html: 'app/ui/checkbox_field.html'
+		},
 		"try": {
 			js: 'app/ui/try.js',
 			html: 'app/ui/try.html'

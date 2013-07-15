@@ -21,7 +21,12 @@ iris.resource(
     for (var i = 0; i < method.param.length; i++) {
       var param = method.param[i];
       if (param.value !== "") {
-        options[param.location][param.name] = param.value;
+        if (param.isList !== "true" || param.value.indexOf("[") === 0) {
+          options[param.location][param.name] = param.value;
+        } else {
+          options[param.location][param.name] = "[" + param.value + "]";
+        }
+        
       }
     }
     

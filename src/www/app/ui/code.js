@@ -17,7 +17,7 @@ iris.ui(function(self) {
 			language = $(this).data("id");
 			self.get("code").find("li").removeClass("selected");
 			$(this).addClass("selected");
-			self.get("see-all").toggle(language === "iris");
+			self.get("see-all").toggle(language === "iris" || language === "java");
 			if (code[language]) {
 				showCode(method);		
 			} else {

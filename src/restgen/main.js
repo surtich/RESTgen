@@ -84,11 +84,14 @@ function processRequest(req, res, next) {
       if (json) {
         body[fieldName] = JSON.parse(req.body.options.body[fieldName]);
       } else {
-        var fieldValue = req.body.options.body[fieldName];
-        if (body) {
-          body += "&";
+        var fieldValues = req.body.options.body[fieldName].indexOf("[") !== 0 ? [req.body.options.body[fieldName]] : req.body.options.body[fieldName].replace(/[\[\]]/g,"").split(",");
+        for (var i = 0; i < fieldValues.length; i++) {
+          var fieldValue = fieldValues[i].trim();
+          if (body) {
+            body += "&";
+          }
+          body += fieldName + "=" + fieldValue;
         }
-        body += fieldName + "=" + fieldValue;
       }
     }
   }

@@ -550,7 +550,8 @@
                     "name": "idCategory",
                     "location": "path",
                     "value": "1",
-                    "description": ""
+                    "description": "",
+                    "javaType": "Long"
                 }]
             }, {
                 "name": "Get Products",
@@ -562,7 +563,8 @@
                     "name": "productsList",
                     "location": "body",
                     "value": "[2,3]",
-                    "description": "Array of idProducts"
+                    "description": "Array of idProducts",
+                    "javaType": "String"
                 }]
             }],
             "path": "/product",
@@ -677,6 +679,317 @@
                 "description": ""
             }],
             "path": "/list",
+            "description": ""
+        }],
+        "description": "",
+        "protocol": "http",
+        "port": "8080",
+        "path": "/s"
+    }]
+}, {
+    "name": "iOS Sign Portal",
+    "version": [{
+        "name": "0.0.1",
+        "host": "localhost",
+        "endpoint": [{
+            "name": "Application",
+            "method": [{
+                "name": "Find All",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": "",
+                    "isList": "false"
+                }],
+                "path": "",
+                "description": ""
+            }, {
+                "name": "Get App Sign List",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": ""
+                }, {
+                    "name": "appKey",
+                    "location": "path",
+                    "value": "4",
+                    "javaType": "Long",
+                    "description": ""
+                }],
+                "path": "/:appKey/sign",
+                "description": ""
+            }, {
+                "name": "Get App",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": ""
+                }, {
+                    "name": "appKey",
+                    "location": "path",
+                    "value": "4",
+                    "javaType": "Long",
+                    "description": ""
+                }],
+                "path": "/:appKey",
+                "description": ""
+            }, {
+                "name": "Create",
+                "method": "POST",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": ""
+                }, {
+                    "name": "bundleId",
+                    "location": "body",
+                    "value": "bundleid_201",
+                    "javaType": "",
+                    "description": ""
+                }, {
+                    "name": "provisioningName",
+                    "location": "body",
+                    "value": "provisioningName_1",
+                    "javaType": "",
+                    "description": ""
+                }, {
+                    "name": "name",
+                    "location": "body",
+                    "value": "name_201",
+                    "javaType": "",
+                    "description": ""
+                }, {
+                    "name": "collaborators",
+                    "location": "body",
+                    "value": "[  jonas@mail.com, sss@mail.com]",
+                    "javaType": "List<String>",
+                    "description": "",
+                    "isList": "true"
+                }],
+                "path": "",
+                "description": ""
+            }, {
+                "name": "Update",
+                "method": "PUT",
+                "type": "text",
+                "param": [{
+                    "name": "id",
+                    "location": "path",
+                    "value": "22",
+                    "javaType": "Long",
+                    "description": "",
+                    "isList": ""
+                }, {
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": ""
+                }, {
+                    "name": "bundleId",
+                    "location": "body",
+                    "value": "bundleid_301",
+                    "javaType": "",
+                    "description": ""
+                }, {
+                    "name": "provisioningName",
+                    "location": "body",
+                    "value": "provisioningName_1",
+                    "javaType": "",
+                    "description": ""
+                }, {
+                    "name": "name",
+                    "location": "body",
+                    "value": "name_301",
+                    "javaType": "",
+                    "description": ""
+                }, {
+                    "name": "collaborators",
+                    "location": "body",
+                    "value": "[  jonas@mail.com, sss@mail.com]",
+                    "javaType": "List<String>",
+                    "description": "",
+                    "isList": "true"
+                }],
+                "path": "/:id",
+                "description": ""
+            }, {
+                "name": "Delete",
+                "method": "DELETE",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": ""
+                }, {
+                    "name": "appKey",
+                    "location": "path",
+                    "value": "4",
+                    "javaType": "Long",
+                    "description": ""
+                }],
+                "path": "/:appKey",
+                "description": ""
+            }],
+            "path": "/app",
+            "description": ""
+        }, {
+            "name": "Sign",
+            "method": [{
+                "name": "Get CallbackUrl",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": "",
+                    "isList": ""
+                }],
+                "path": "/uploadurl",
+                "description": ""
+            }, {
+                "name": "Uploaded",
+                "method": "POST",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": "",
+                    "isList": ""
+                }, {
+                    "name": "appId",
+                    "location": "query",
+                    "isList": "false",
+                    "value": "4",
+                    "javaType": "Long",
+                    "description": ""
+                }],
+                "path": "",
+                "description": ""
+            }],
+            "path": "/sign",
+            "description": ""
+        }, {
+            "name": "User",
+            "method": [{
+                "name": "create",
+                "method": "POST",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": "",
+                    "isList": ""
+                }, {
+                    "name": "e",
+                    "location": "body",
+                    "isList": "false",
+                    "value": "test@mail.com",
+                    "javaType": "",
+                    "description": "email"
+                }],
+                "path": "",
+                "description": ""
+            }, {
+                "name": "Find All",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": "",
+                    "isList": ""
+                }, {
+                    "name": "e",
+                    "location": "body",
+                    "isList": "false",
+                    "value": "test@mail.com",
+                    "javaType": "",
+                    "description": "email"
+                }],
+                "path": "",
+                "description": ""
+            }],
+            "path": "/user",
+            "description": ""
+        }, {
+            "name": "Log",
+            "method": [{
+                "name": "create",
+                "method": "POST",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": "",
+                    "isList": ""
+                }, {
+                    "name": "signKey",
+                    "location": "body",
+                    "isList": "false",
+                    "value": "tgr",
+                    "javaType": "",
+                    "description": ""
+                }, {
+                    "name": "msg",
+                    "location": "body",
+                    "isList": "false",
+                    "value": "rttr",
+                    "javaType": "",
+                    "description": ""
+                }],
+                "path": "",
+                "description": ""
+            }, {
+                "name": "Get All",
+                "method": "GET",
+                "type": "text",
+                "param": [{
+                    "name": "Cookie",
+                    "location": "header",
+                    "value": "JSESSIONID=gvnhhzok91qm",
+                    "description": "Cookie for GAE login",
+                    "javaType": "",
+                    "isList": ""
+                }, {
+                    "name": "signKey",
+                    "location": "query",
+                    "isList": "false",
+                    "value": "tgr",
+                    "javaType": "",
+                    "description": ""
+                }],
+                "path": "",
+                "description": ""
+            }],
+            "path": "/log",
             "description": ""
         }],
         "description": "",

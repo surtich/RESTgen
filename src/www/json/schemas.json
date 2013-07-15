@@ -118,6 +118,11 @@
     "default": "body",
     "values": "query, body, path, header"
     },
+  "isList": {
+    "inline" : true,
+    "view": "checkbox",
+    "default": "false"
+    },
   "javaType": {
     "inline" : true
   },
