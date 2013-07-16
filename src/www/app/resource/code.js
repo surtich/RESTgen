@@ -336,7 +336,7 @@ iris.resource(
         var param = method.param[j];
         var annotation = "";
         var type = param.javaType || "String";
-        if (param.location === "body" || param.location === "path") {
+        if (param.location === "body" || param.location === "path" || param.location === "query") {
           javadoc += "\n" + pre + " * @param " + param.name;
           if (param.description) {
             javadoc += "\t" + param.description;
