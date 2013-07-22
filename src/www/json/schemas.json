@@ -87,17 +87,55 @@
     "values": "text, json",
     "default": "text"
     },
+  "content-type": {
+    "inline" : false,
+    "view": "select",
+    "values": "application/x-www-form-urlencoded,application/json,text/plain,text/html",
+    "default": "application/x-www-form-urlencoded"
+    },
+    "response content-type": {
+    "inline" : false,
+    "view": "select",
+    "values": "application/x-www-form-urlencoded,application/json,text/plain,text/html",
+    "default": "application/x-www-form-urlencoded"
+    },
   "description": {
     "show_title": false,
     "inline" : true,
     "view": "textarea"
     },
+  "java return type": {
+    "inline" : false,
+    "default": "Response"
+    },
   "param": {
     "type": "list",
     "view": "table",
     "schema": "param"
+  },
+  "http codes": {
+    "type": "list",
+    "view": "table",
+    "schema": "http code"
   }
  },
+ "http code": {
+    "number": {
+      "key": true,
+      "show": false,
+      "link": false,
+      "inline": true,
+      "filter": false,
+      "expand": false,
+      "details": false,
+      "default": 200
+    },
+    "description": {
+      "inline": true,
+      "view": "textarea",
+      "default": "All OK"
+    }
+  },
  "param": {
   "name": {
    "key": true,
@@ -106,7 +144,7 @@
    "inline": true,
    "filter": false,
    "expand": false,
-   "details": false
+   "details": true
   },
   "value": {
     "inline" : true,
@@ -119,13 +157,18 @@
     "values": "query, body, path, header"
     },
   "isList": {
-    "inline" : true,
+    "inline" : false,
     "view": "checkbox",
     "default": "false"
     },
   "javaType": {
-    "inline" : true
+    "inline" : false
   },
+  "isJavaPojo": {
+    "inline" : false,
+    "view": "checkbox",
+    "default": "false"
+    },
   "description": {
     "inline" : true
   }

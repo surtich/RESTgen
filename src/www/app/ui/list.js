@@ -44,7 +44,7 @@ iris.ui(function(self) {
 				html += "<td class='field' " + style + ">" + fieldName + "</td>";
 			}
 		}
-		html += "</tr>";
+		html += "<td></td></tr>";
 		self.get("values").html(html);
 
 	}
@@ -64,8 +64,8 @@ iris.ui(function(self) {
 		render();
 	}
 
-	function add(item, schema, pos, size) {
-		var ui = self.ui('values', iris.path.ui.item.js, {'link_schema': self.setting('link_schema'), 'item': item, 'itemParent': list.itemParent, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render, 'view': self.setting("view"), header: self.header});
+	function add(item, schema, pos, size, autoEdit) {
+		var ui = self.ui('values', iris.path.ui.item.js, {'link_schema': self.setting('link_schema'), 'item': item, 'itemParent': list.itemParent, 'schema': schema, 'pos': pos, 'size': list.items.length, 'delete': del, 'add': newItem, 'move': move, 'render': render, 'view': self.setting("view"), header: self.header, autoEdit: autoEdit || false});
 		
 		items.push(ui);
 
@@ -76,7 +76,7 @@ iris.ui(function(self) {
 		var item = app.clone(clon) || {};
 		for (var fieldName in list.schema) {
 			if (list.schema[fieldName].key) {
-				item[fieldName] = ( clon ? clon[fieldName] + "_" + iris.translate("STATES.COPY") : iris.translate("STATES.NEW") + "_" + (list.type || list.name) );	
+				item[fieldName] = ( clon ? clon[fieldName] + "_" + iris.translate("STATES.COPY") : list.schema[fieldName].default || iris.translate("STATES.NEW") + "_" + (list.type || list.name) );	
 			}
 
 			if (!clon) {
@@ -94,7 +94,7 @@ iris.ui(function(self) {
 
 		list.items.push(item);
 		if (createUI !== false) {
-			add(item, list.schema, list.items.length - 1, list.items.length);
+			var ui = add(item, list.schema, list.items.length - 1, list.items.length, true);
 			updateSize();
 			render();	
 		}	

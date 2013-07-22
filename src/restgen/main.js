@@ -62,7 +62,7 @@ function processRequest(req, res, next) {
   var url = req.body.options.url;
 
   var headers = {
-    'content-type' : 'application/x-www-form-urlencoded'
+    'content-type' : req.body.options["content-type"] || 'application/x-www-form-urlencoded'
   }
 
   var json = req.body.options.json === "true";

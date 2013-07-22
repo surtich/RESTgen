@@ -20,7 +20,7 @@ iris.ui(function(self) {
 		self.schema = schema;
 		
 		self.tmplMode(self.APPEND);
-		if (self.setting("table")) {
+		if (self.setting("table") && schema.inline !== false) {
       		self.tmpl(iris.path.ui.field_cell.html);
       	} else {
       		self.tmpl(iris.path.ui.field.html);	

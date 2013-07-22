@@ -329,7 +329,15 @@ iris.resource(
         }) + "\")";
     }
 
-    java += "\n" + pre + "public Response " + methodName + "(";
+    if (method["response content-type"]) {
+      java += "\n" + pre + "@Produces(\"" + method["content-type result"] + "\")";
+    }
+
+    if (method["content-type"]) {
+      java += "\n" + pre + "@Consumes(\"" + method["content-type"] + "\")";
+    }
+
+    java += "\n" + pre + "public " +  (method["java return type"] || "Response") + " " + methodName + "(";
     var params = [];
     if (method.param) {
       for (var j = 0; j < method.param.length; j++) {
@@ -343,18 +351,23 @@ iris.resource(
           }  
         }
         
-        switch (param.location) {
-          case "path":
-            annotation = "PathParam";     
-            break;
-          case "body":
-            annotation = "FormParam";
-            break;
-          case "query":
-          annotation = "QueryParam";
-            //javaImplementation += "\n" + pre + "\t" + type + " " + param.name + " = new " + type + "(p_request.getParameter(\"" + param.name + "\"));";  
+        if (param.isJavaPojo !== "true") {
+          switch (param.location) {
+            case "path":
+              annotation = "PathParam";     
+              break;
+            case "body":
+              annotation = "FormParam";
+              break;
+            case "query":
+            annotation = "QueryParam";
+              //javaImplementation += "\n" + pre + "\t" + type + " " + param.name + " = new " + type + "(p_request.getParameter(\"" + param.name + "\"));";  
 
+          }  
+        } else {
+          params.push((param.javaType ? param.javaType.replace(/[<]/, "&lt;").replace(/[>]/, "&gt;") : "String") + " p_" + param.name);
         }
+        
         if (annotation) {
           params.push("@" + annotation + "(\"" + param.name + "\") " + (param.javaType ? param.javaType.replace(/[<]/, "&lt;").replace(/[>]/, "&gt;") : "String") + " p_" + param.name);
 

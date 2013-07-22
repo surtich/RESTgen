@@ -14,7 +14,8 @@ iris.resource(
       body: {},
       header: {},
       path: {},
-      query: {}
+      query: {},
+      "content-type": method["content-type"]
     };
 
 

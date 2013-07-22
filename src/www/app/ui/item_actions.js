@@ -82,7 +82,7 @@ iris.ui(function(self) {
 			self.notify(iris.evts.edit);
 			self.get("btnOK").prop('disabled', false);
 			self.get("btnCancel").prop('disabled', false);
-		});
+		})
 
 		self.get('btnOK').click(function() {
 			editable = false;
@@ -168,6 +168,10 @@ iris.ui(function(self) {
 		render();	
 	}
 
+
+	self.edit = function () {
+		self.get('btnEdit').trigger("click");
+	}
 	
 	function render() {
 		self.get('lblOK').toggle(app.isEditable() && showDetails && editable);

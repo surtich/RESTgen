@@ -14,7 +14,7 @@ iris.ui(function(self) {
  var listItemsLoaded = false;
  var listSchema = null;
  
- self.settings({"view": null, "header": null, "item": null, "itemParent": null});
+ self.settings({"view": null, "header": null, "item": null, "itemParent": null, "autoEdit": false});
 
  self.create = function() {
   item = self.setting('item');
@@ -38,7 +38,6 @@ iris.ui(function(self) {
 
   if (view === "table") {
     self.tmpl(iris.path.ui.item_row.html);
-    showDetails = true;
     self.get("line").addClass("field");
     self.get("actions").addClass("field");
   } else {
@@ -95,7 +94,11 @@ iris.ui(function(self) {
       }
       var container = 'values';
       if (view == "table") {
-        container = 'values';
+        if (schema[fieldName].inline  === false) {
+          container = 'values2';  
+        } else {
+          container = 'values';
+        }
       } else {
         if (schema[fieldName].inline) {
           if (schema[fieldName].pre) {
@@ -149,6 +152,7 @@ iris.ui(function(self) {
 
     actions.init();
 
+
   function createListItems() {
     if (listItemsLoaded) {
       return;
@@ -159,7 +163,11 @@ iris.ui(function(self) {
       
       var container = 'values';
       if (view == "table") {
-        container = 'values';
+        if (schema[fieldName].inline  === false) {
+          container = 'values2';  
+        } else {
+          container = 'values';
+        }
       } else {
         if (schema[fieldName].inline) {
           if (schema[fieldName].pre) {
@@ -211,22 +219,27 @@ iris.ui(function(self) {
   self.get("more").toggle(!app.isEditable());  
 
   //render();
+  if (self.setting("autoEdit")) {
+    self.setting("autoEdit", false);
+    actions.edit();
+  }
+ };
 
- }
+ self.awake = function() {
+  
+};
 
  function showValues(visible) {
   if (!listItemsLoaded) {
     self.createListItems();
   }
   var id = 'expand';
-  if (view == "table") {
-    id = 'values';
-  }
+  
   var container = self.get(id);
   if (container.css("display") === "none" && visible || container.css("display") === "block" && !visible ) {
    container.slideToggle();
-   showDetails = visible;
   }
+  showDetails = visible;
  }
 
  function toggleAll(visible) {
@@ -329,12 +342,10 @@ iris.ui(function(self) {
 
  function render() {
   if (view === "table") {
-    showDetails = true;
-    self.get('values').toggle(showDetails);
-  } else {
-    self.get('expand').toggle(showDetails);
+    self.get('values').toggle(true);
   }
-
+  self.get('expand').toggle(showDetails);
+  
   for (var i = 0; i < fields.length; i++) {
    var field = fields[i];
    field.setEditable(app.isEditable() && editable);	
